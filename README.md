@@ -1,5 +1,6 @@
 # 프로젝트명
 > Upstage AI Lab 3기 4조의 EDA 프로젝트
+> streamlit deploy 용으로 만든 리포지토리
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
