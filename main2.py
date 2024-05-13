@@ -17,31 +17,56 @@ df = pd.read_excel("240510_df_2_1.xlsx")
 ###########################
 
 # 연-월별 대분류별 게시글수
-
-# 날짜별 대분류별 게시글 수
-def day_category_posts():
+def month_category_posts():
+    df = pd.read_excel('240512_df.xlsx',parse_dates=['date'])
     df['date'] = pd.to_datetime(df['date'])  # 'date' 열을 datetime 형식으로 변환
-    df['year_month_day'] = df['date'].dt.strftime('%Y-%m-%d')  # 연도-월-일 형식으로 날짜 변환
+    df['year_month'] = df['date'].dt.to_period('M')
 
     # 연도와 월로 그룹화하여 게시글 수 요약
-    date_ = df.groupby(['year_month_day', '대분류']).size().reset_index(name='게시글')
-    df_pivot = date_.pivot(index='year_month_day', columns='대분류', values='게시글')
+    df_year_month = df.groupby(['year_month', '대분류']).size().reset_index(name='게시글')
+
+    # Pandas Period를 문자열로 변환
+    df_year_month['year_month'] = df_year_month['year_month'].dt.strftime('%Y-%m')
+
+    # pivot을 사용하여 데이터 재구성
+    df_pivot = df_year_month.pivot(index='year_month', columns='대분류', values='게시글')
 
     # Plotly를 사용하여 선 그래프 생성
     fig = px.line(df_pivot, x=df_pivot.index, y=df_pivot.columns,
-                labels={'value': '게시글 수', 'year_month_day': '날짜', 'variable': '대분류'},
-                markers=True, title='날짜별 대분류별 게시글 수')
-
-    # x축 눈금 설정
-    fig.update_xaxes(
-        tickangle=45,
-        tickmode='array',
-        tickvals=[str(x) for x in df_pivot.index],
-        ticktext=[x.strftime('%Y-%m') for x in pd.to_datetime(df_pivot.index)]
-    )
+                labels={'value': '게시글 수', 'year_month': '날짜', 'variable': '대분류'},
+                markers=True, title='연-월별 대분류별 게시글 수')
 
     # streamlit에 그래프 표시
     return st.plotly_chart(fig)
+    
+# 날짜별 대분류별 게시글 수
+def day_category_posts():
+    df['year_month_day'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
+
+    # Prepare the pivot table
+    df_pivot = df.pivot_table(index='year_month_day', columns='대분류', values='post', aggfunc='count').reset_index()
+    df_pivot_long = df_pivot.melt(id_vars='year_month_day', var_name='대분류', value_name='게시글 수')
+
+    # Convert year_month_day back to datetime for plotting
+    df_pivot_long['year_month_day'] = pd.to_datetime(df_pivot_long['year_month_day'])
+
+    # Now you can use dt accessor
+    x_tickvals = df_pivot_long['year_month_day'].dt.strftime('%Y-%m')
+
+    # Plot using Plotly
+    fig = px.line(df_pivot_long, x='year_month_day', y='게시글 수', color='대분류',
+                title='날짜별 대분류별 게시글 수',
+                labels={'year_month_day': '날짜', '게시글 수': '게시글 수'},
+                markers=True)
+    fig.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=df_pivot_long['year_month_day'],
+            ticktext=x_tickvals
+        )
+    )
+
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 년도별 대분류별 게시글수- 일단위
 def category_posts_day():
@@ -71,7 +96,7 @@ def category_posts_day():
     )
 
     # 스트림릿 애플리케이션에 그래프 표시
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 # 년도별 대분류별 게시글수- 월단위
 def category_posts_month():
@@ -81,20 +106,29 @@ def category_posts_month():
     df_year_month = df.groupby(['year_month', '대분류']).size().reset_index(name='게시글')
     df_year_month['year_month'] = df_year_month['year_month'].astype(str)
 
-    # Create pivot table
+    # 피벗테이블 생성
     df_pivot = df_year_month.pivot(index='year_month', columns='대분류', values='게시글')
 
     # Plot data year by year with Plotly
     years = df_year_month['year_month'].str.split('-').str[0].unique()
-    for year in years:
-        df_year = df_pivot[df_pivot.index.str.startswith(year)]
-        fig = px.line(df_year, x=df_year.index, y=df_year.columns,
-                    labels={'value': '게시글 수', 'variable': '대분류'},
-                    title=f'{year}년도 대분류별 게시글 수')
-        fig.update_xaxes(title_text='월')
-        fig.update_yaxes(title_text='게시글 수')
-        fig.update_layout(xaxis_tickangle=-45)
-        st.plotly_chart(fig)
+
+    # Streamlit 탭 컨테이너 생성
+    with st.container():
+        tabs = st.tabs([year for year in years])
+
+        # 각 연도별 탭에 해당하는 그래프 추가
+        for tab, year in zip(tabs, years):
+            df_year = df_pivot[df_pivot.index.str.startswith(year)]
+            fig = px.line(df_year, x=df_year.index, y=df_year.columns,
+                          labels={'value': '게시글 수', 'variable': '대분류'},
+                          title=f'{year}년도 대분류별 게시글 수')
+            fig.update_xaxes(title_text='월')
+            fig.update_yaxes(title_text='게시글 수')
+            fig.update_layout(xaxis_tickangle=-45)
+            
+            # 현재 탭에 그래프 출력
+            with tab:
+                st.plotly_chart(fig, use_container_width=True)
 
 # 연-월별 대분류별 좋아요 수
 def month_category_good():
@@ -119,8 +153,8 @@ def month_category_good():
         trace.marker.symbol = markers[i % len(markers)]
         trace.marker.size = 10  # 마커 크기 조절
 
-    # Streamlit을 사용하여 그래프 출력
-    return st.plotly_chart(fig)
+    # Streamlit으로 그래프 출력
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 연-월별 많이 나오는 키워드
 def month_keyword():
@@ -139,22 +173,27 @@ def month_keyword():
         # 년-월별 키워드 빈도수 저장
         keyword_counters_by_year_month[year_month] = keyword_counter
 
-    # 각 년-월별로 그래프를 생성
-    for year_month, keyword_counter in keyword_counters_by_year_month.items():
-        keyword_counter_most_common = keyword_counter.most_common(10)  # 가장 빈도 높은 10개 키워드
-        keywords, counts = zip(*keyword_counter_most_common)
-        
-        # Plotly 막대 그래프 생성
-        fig = go.Figure(data=[go.Bar(x=keywords, y=counts)])
-        fig.update_layout(
-            title=f'{year_month}년-월별 가장 많이 등장하는 키워드',
-            xaxis_title="키워드",
-            yaxis_title="빈도",
-            xaxis={'categoryorder':'total descending'}  # 내림차순으로 정렬
-        )
-        
-        # Streamlit으로 그래프 출력
-        st.plotly_chart(fig)
+    # Streamlit 탭 컨테이너 생성
+    with st.container():
+        tabs = st.tabs([str(year_month) for year_month in keyword_counters_by_year_month.keys()])
+
+        # 각 탭에 해당하는 그래프 추가
+        for tab, (year_month, keyword_counter) in zip(tabs, keyword_counters_by_year_month.items()):
+            keyword_counter_most_common = keyword_counter.most_common(10)  # 가장 빈도 높은 10개 키워드
+            keywords, counts = zip(*keyword_counter_most_common)
+            
+            # Plotly 막대 그래프 생성
+            fig = go.Figure(data=[go.Bar(x=keywords, y=counts)])
+            fig.update_layout(
+                title=f'{year_month}에 가장 많이 등장하는 키워드',
+                xaxis_title="키워드",
+                yaxis_title="빈도",
+                xaxis={'categoryorder':'total descending'}  # 내림차순으로 정렬
+            )
+            
+            # 현재 탭에 streamlit으로 그래프 출력
+            with tab:
+                st.plotly_chart(fig, use_container_width=True)
 
 # 많이 등장하는 키워드와 좋아요의 관계
 def keyword_good():
@@ -194,9 +233,6 @@ def keyword_good():
 
     result_df = pd.DataFrame(results)
 
-    # Streamlit을 사용하여 결과 데이터프레임 출력
-    st.write(result_df)
-
     # 가장 많이 사용된 키워드와 그 좋아요 수에 대한 막대 그래프를 Plotly로 생성
     fig = go.Figure()
     for year_month, keyword_counter in keyword_counters_by_year_month.items():
@@ -214,12 +250,12 @@ def keyword_good():
     )
 
     # Streamlit으로 그래프 출력
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
     
 # 계정 ID별 월별 좋아요 수
 def ID_month_good():
     # 'date' 열을 기준으로 월을 추출하여 새로운 열에 저장
-    df['month'] = df['date'].dt.to_period('M')
+    df['month'] = df['date'].dt.to_period('M').astype(str)
 
     # 월별, ID별로 좋아요 수를 합산
     monthly_likes = df.groupby(['month', 'ID'])['good'].sum().reset_index()
@@ -238,13 +274,13 @@ def ID_month_good():
     fig.update_layout(xaxis_title='월', yaxis_title='좋아요 수', legend_title_text='ID')
     fig.update_xaxes(tickangle=45)
 
-    # Streamlit을 사용하여 그래프 출력
-    st.plotly_chart(fig)
+    # Streamlit으로 그래프 출력
+    st.plotly_chart(fig, use_container_width=True)
 
 # 월별 ID별 게시글 수 
 def ID_posts():
     # 'date' 열을 기준으로 월을 추출하여 새로운 열에 저장
-    df['month'] = df['date'].dt.to_period('M')
+    df['month'] = df['date'].dt.to_period('M').astype(str)
 
     # 월별, ID별로 게시글 수를 카운트
     monthly_count = df.groupby(['month', 'ID'])['post'].count().reset_index()
@@ -263,8 +299,9 @@ def ID_posts():
     fig.update_layout(xaxis_title='월', yaxis_title='게시글 수', legend_title_text='ID')
     fig.update_xaxes(tickangle=45)
 
-    # Streamlit을 사용하여 그래프 출력
-    st.plotly_chart(fig)
+    # Streamlit으로 그래프 출력
+    st.plotly_chart(fig, use_container_width=True)
+
 
 #################
 # ---- 메인 ----
@@ -280,36 +317,16 @@ col1, col2 = st.columns([1,4])
 with col1:
     st.subheader("d d d d d d d d")
 with col2: 
-    def month_category_posts():
-        df = pd.read_excel('240512_df.xlsx',parse_dates=['date'])
-        df['date'] = pd.to_datetime(df['date'])  # 'date' 열을 datetime 형식으로 변환
-        df['year_month'] = df['date'].dt.to_period('M')
-
-        # 연도와 월로 그룹화하여 게시글 수 요약
-        df_year_month = df.groupby(['year_month', '대분류']).size().reset_index(name='게시글')
-
-        # Pandas Period를 문자열로 변환
-        df_year_month['year_month'] = df_year_month['year_month'].dt.strftime('%Y-%m')
-
-        # pivot을 사용하여 데이터 재구성
-        df_pivot = df_year_month.pivot(index='year_month', columns='대분류', values='게시글')
-
-        # Plotly를 사용하여 선 그래프 생성
-        fig = px.line(df_pivot, x=df_pivot.index, y=df_pivot.columns,
-                    labels={'value': '게시글 수', 'year_month': '날짜', 'variable': '대분류'},
-                    markers=True, title='연-월별 대분류별 게시글 수')
-
-        # streamlit에 그래프 표시
-        return st.plotly_chart(fig)
     month_category_posts()
 
+## 오류나는부분1
 # 날짜별 대분류별 게시글수
-st.subheader("날짜별 대분류별 게시글수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    day_category_posts()
+# st.subheader("날짜별 대분류별 게시글수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     day_category_posts()
 
 # 년도별 대분류별 게시글수
 st.subheader("년도별 대분류별 게시글수")
@@ -345,24 +362,26 @@ with col2:
 
 # 많이 등장하는 키워드와 좋아요의 관계
 st.subheader("많이 등장하는 키워드와 좋아요의 관계")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    keyword_good()
+st.subheader("의문점")
+st.markdown("- 제주도가 많이 찍혔는데, 그이유가 사람들이 좋아요를 많이 눌러서다?")
+keyword_good()
 
-# 계정 ID별 월별 좋아요 수
-st.subheader("계정 ID별 월별 좋아요 수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    ID_month_good()
+## 오류나서 주석처리함2
+# # 계정 ID별 월별 좋아요 수
+# st.subheader("계정 ID별 월별 좋아요 수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     ID_month_good()
 
 # 월별 ID별 게시글 수 
 st.subheader("월별 ID별 게시글 수 ")
 col1, col2 = st.columns([1,4])
 with col1:
-    st.subheader("d d d d d d d d")
+    st.subheader("인사이트")
+    st.markdown("- 활동한만큼 좋아요수가 많아진다."
+                "- 게시글을 꾸준히 올려야 좋아요 수가 많아진다."
+                "- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적이다.")
 with col2: 
     ID_posts()
