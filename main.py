@@ -260,7 +260,32 @@ def month_posts():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-month_posts()
+
+# 월별 좋아요수
+def month_good():
+    # 그룹화 및 집계
+    grouped_counts = df.groupby('month').agg(post_count=('good', 'sum')).reset_index()
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped_counts, x='month', y='post_count',
+                labels={'month': '월', 'post_count': '좋아요 수'},
+                title='월별 좋아요 수')
+    fig.update_layout(
+        xaxis_title='월', yaxis_title='좋아요 수', plot_bgcolor='white',
+        xaxis=dict(tickmode='linear', dtick=1),  # 눈금 간격을 1로 설정하여 모든 레이블 표시
+        yaxis=dict(tickmode='linear', dtick=100000),
+    )
+    fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+
+# 탭 설정
+tab1, tab2 = st.tabs(["월별 게시글 수", "월별 좋아요 수"])
+with tab1:
+    month_posts()
+with tab2:
+    month_good()
 
 # 월별 대분류별 게시글수
 def month_category_posts():
@@ -294,27 +319,6 @@ def month_category_posts():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-month_category_posts()
-
-# 월별 좋아요수
-def month_good():
-    # 그룹화 및 집계
-    grouped_counts = df.groupby('month').agg(post_count=('good', 'sum')).reset_index()
-
-    # Plotly를 사용한 그래프 그리기
-    fig = px.bar(grouped_counts, x='month', y='post_count',
-                labels={'month': '월', 'post_count': '좋아요 수'},
-                title='월별 좋아요 수')
-    fig.update_layout(
-        xaxis_title='월', yaxis_title='좋아요 수', plot_bgcolor='white',
-        xaxis=dict(tickmode='linear', dtick=1),  # 눈금 간격을 1로 설정하여 모든 레이블 표시
-        yaxis=dict(tickmode='linear', dtick=100000),
-    )
-    fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
-
-    # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
-month_good()
 
 # 월별 대분류별 좋아요수
 def month_category_good():
@@ -339,7 +343,169 @@ def month_category_good():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-month_category_good()
+
+# 월별 대분류별 게시글당 평균 좋아요 비율
+def month_category_posts_good():
+    # 게시글 수와 좋아요 수를 함께 그룹화하고 집계
+    grouped = df.groupby(['month', '대분류']).agg(post_count=('post', 'count'),good_sum=('good', 'sum')).reset_index()
+
+    # 게시글당 평균 좋아요 비율 계산
+    grouped['average_like_ratio'] = (grouped['good_sum'] / grouped['post_count'] / 100).round(4)
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped, x='month', y='average_like_ratio', color='대분류',
+                labels={'month': '월', 'average_like_ratio': '좋아요 비율 (%)', '대분류': '업종'},
+                title='월별 대분류별 게시글당 평균 좋아요 비율')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(
+        xaxis_title='월',
+        yaxis_title='좋아요 비율 (%)',
+        plot_bgcolor='white',
+        barmode='stack'
+    )
+
+    # 범례 위치 조정
+    fig.update_layout(legend=dict(
+        title='업종',
+        orientation='h',
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+
+# 탭 설정
+tab1, tab2, tab3 = st.tabs(["월별 대분류별 게시글 수", "월별 대분류별 좋아요 수", "월별 대분류별 게시글당 평균 좋아요 비율"])
+with tab1:
+    month_category_posts()
+with tab2:
+    month_category_good()
+with tab3:
+    month_category_posts_good()
+
+# 연도별 많이 나오는 키워드 수
+def year_keyword():
+    # 연도별로 데이터를 그룹화
+    years = sorted(df['year'].unique())
+    tabs = st.tabs([f"{year}" for year in years])
+    
+    for idx, tab in enumerate(tabs):
+        year = years[idx]
+        year_data = df[df['year'] == year]
+        
+        # 빈 Counter 객체 생성
+        keyword_counter = Counter()
+        
+        # 해당 연도의 데이터에서 '키워드2' 열의 값을 합치기
+        merged_keywords = ' '.join([keyword.strip("'[],") for keyword in year_data['키워드2']])
+        
+        # 토큰화하여 Counter 객체 업데이트
+        tokens = merged_keywords.split()
+        keyword_counter.update(tokens)
+        
+        # 가장 많이 등장하는 키워드 10개를 선택
+        most_common_keywords = keyword_counter.most_common(10)
+        keywords, counts = zip(*most_common_keywords)
+        
+        # 데이터프레임 생성
+        data = pd.DataFrame({'Keyword': keywords, 'Frequency': counts})
+        
+        # Plotly를 사용한 그래프 그리기
+        fig = px.bar(data, x='Keyword', y='Frequency', title=f'{year}년 가장 많이 등장하는 키워드 (상위 10개)',
+                     labels={'Frequency': '빈도', 'Keyword': '키워드'})
+        fig.update_layout(xaxis_title='키워드', yaxis_title='빈도', plot_bgcolor='white', xaxis_tickangle=-45)
+        
+        # 탭에 그래프 추가
+        with tab:
+            st.plotly_chart(fig)
+year_keyword()
+
+# 연도별 좋아요 수
+def year_good_fig1():
+    # 연도별로 '좋아요' 수 집계
+    grouped_good = df.groupby('year').agg(good_sum=('good', 'sum')).reset_index()
+
+    # Plotly를 사용한 그래프 그리기
+    fig1 = px.bar(grouped_good, x='year', y='good_sum',
+                labels={'year': '연도', 'good_sum': '좋아요 합계'},
+                title='연도별 좋아요 합계')
+
+    # 그래프 레이아웃 설정
+    fig1.update_layout(
+        xaxis_title='연도',
+        yaxis_title='좋아요 합계',
+        plot_bgcolor='white',
+        xaxis_tickmode='linear',  # 모든 연도 레이블 표시
+        xaxis_dtick=1  # 1년 간격으로 눈금 설정
+    )
+    # streamlit 막대그래프 그리기
+    st.plotly_chart(fig1)
+def year_good_fig2():
+    # 연도별로 '좋아요' 수 집계
+    grouped_good = df.groupby('year').agg(good_sum=('good', 'sum')).reset_index()
+
+    # Plotly를 사용한 꺾은선 그래프 그리기
+    fig2 = px.line(grouped_good, x='year', y='good_sum',
+                labels={'year': '연도', 'good_sum': '좋아요 합계'},
+                title='연도별 좋아요 합계',
+                markers=True)  # 점 표시 추가
+
+    # 그래프 레이아웃 설정
+    fig2.update_layout(
+        xaxis_title='연도',
+        yaxis_title='좋아요 합계',
+        plot_bgcolor='white',
+        xaxis_tickmode='linear',  # 모든 연도 레이블 표시
+        xaxis_dtick=1  # 1년 간격으로 눈금 설정
+    )
+
+    # streamlit 막대그래프 그리기
+    st.plotly_chart(fig2)
+
+col1, col2= st.tabs(["막대그래프", "꺾은선그래프"])
+with col1:
+    year_good_fig1()
+with col2:
+    year_good_fig2()
+
+# 연도별 대분류별 좋아요 합계
+def year_category_good():
+    # 연도와 대분류별 'good' 열의 합을 계산한 데이터프레임 생성
+    grouped_good = df.groupby(['year', '대분류']).agg(good_sum=('good', 'sum')).reset_index()
+
+    # Plotly 그래프 객체 생성
+    fig = go.Figure()
+
+    # 각 대분류별로 그래프를 그립니다.
+    for category in grouped_good['대분류'].unique():
+        data = grouped_good[grouped_good['대분류'] == category]
+        fig.add_trace(go.Scatter(
+            x=data['year'],
+            y=data['good_sum'],
+            mode='lines+markers',
+            name=category  # 범례 이름 설정
+        ))
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(
+        title='연도별 대분류별 좋아요 합계',
+        xaxis=dict(title='연도'),
+        yaxis=dict(title='좋아요 합계'),
+        legend_title="대분류",
+        plot_bgcolor='white'
+    )
+
+    # x축 설정: 모든 연도 표시
+    fig.update_xaxes(tickmode='array', tickvals=grouped_good['year'].unique())
+
+    # Streamlit에 그래프 표시
+    st.plotly_chart(fig)
+year_category_good()
+
 
 ####################
 # ---- 사이드바 ----
