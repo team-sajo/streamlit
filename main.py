@@ -226,6 +226,121 @@ def month_keyword():
             st.plotly_chart(fig)
 month_keyword()
 
+# 업종별 게시글수
+def category_posts():
+    # 대분류를 기준으로 그룹화하고, 각 그룹에서 'post' 열 값의 빈도를 계산합니다.
+    grouped_counts = df.groupby('대분류').agg(post_count = ('post', 'count'))
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped_counts, x=grouped_counts.index, y='post_count',
+                labels={'x': '대분류', 'post_count': '포스트 수'},
+                title='업종별 게시글 수')
+    fig.update_layout(xaxis_title='월', yaxis_title='포스트 수',
+                    plot_bgcolor='white')
+    fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
+    fig.add_hline(y=grouped_counts['post_count'].mean(), line_dash="dash", line_color="red", annotation_text="평균 게시글 수")
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+category_posts()
+
+# 월별 게시글수
+def month_posts():
+    # 대분류를 기준으로 그룹화하고, 각 그룹에서 'post' 열 값의 빈도를 계산합니다.
+    grouped_counts = df.groupby('month').agg(post_count=('post', 'count'))
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped_counts, x=grouped_counts.index, y='post_count',
+                labels={'x': '월', 'post_count': '포스트 수'},
+                title='월별 게시글 수')
+    fig.update_layout(xaxis_title='월', yaxis_title='포스트 수', xaxis=dict(tickmode='linear', dtick=1),
+                    plot_bgcolor='white')
+    fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
+    fig.add_hline(y=grouped_counts['post_count'].mean(), line_dash="dash", line_color="red", annotation_text="평균 게시글 수")
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+month_posts()
+
+# 월별 대분류별 게시글수
+def month_category_posts():
+    # 그룹화 및 집계
+    grouped_counts = df.groupby(['month', '대분류']).agg(post_count=('post', 'count')).reset_index()
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped_counts, x='month', y='post_count', color='대분류',
+                labels={'month': '월', 'post_count': '게시글 수', '대분류': '업종'},
+                title='월별 대분류별 게시글 수')
+
+    # 막대 그래프에 대한 세부 설정
+    fig.update_layout(
+        xaxis_title='월',
+        yaxis_title='게시글 수',
+        plot_bgcolor='white',
+        xaxis=dict(tickmode='linear', dtick=1),
+        legend_title='업종',
+        barmode='stack'
+    )
+
+    # 범례 위치 조정
+    fig.update_layout(legend=dict(
+        title='업종',
+        orientation='h',
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ))
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+month_category_posts()
+
+# 월별 좋아요수
+def month_good():
+    # 그룹화 및 집계
+    grouped_counts = df.groupby('month').agg(post_count=('good', 'sum')).reset_index()
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped_counts, x='month', y='post_count',
+                labels={'month': '월', 'post_count': '좋아요 수'},
+                title='월별 좋아요 수')
+    fig.update_layout(
+        xaxis_title='월', yaxis_title='좋아요 수', plot_bgcolor='white',
+        xaxis=dict(tickmode='linear', dtick=1),  # 눈금 간격을 1로 설정하여 모든 레이블 표시
+        yaxis=dict(tickmode='linear', dtick=100000),
+    )
+    fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+month_good()
+
+# 월별 대분류별 좋아요수
+def month_category_good():
+    # 그룹화 및 집계
+    grouped_counts = df.groupby(['month', '대분류']).agg(post_count=('good', 'sum')).reset_index()
+
+    # Plotly를 사용한 그래프 그리기
+    fig = px.bar(grouped_counts, x='month', y='post_count', color='대분류',
+                labels={'month': '월', 'post_count': '좋아요 수', '대분류': '업종'},
+                title='월별 대분류별 좋아요 수', barmode='stack')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(
+        xaxis_title='월',
+        yaxis_title='좋아요 수',
+        plot_bgcolor='white',
+        legend_title='업종',
+        xaxis=dict(tickmode='linear', dtick=1),
+        yaxis=dict(tickmode='linear', dtick=100000),
+        legend=dict(orientation='h', yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+month_category_good()
+
 ####################
 # ---- 사이드바 ----
 ####################
