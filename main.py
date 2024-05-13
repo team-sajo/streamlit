@@ -7,11 +7,6 @@ import emoji # pip install emoji
 from PIL import Image
 
 df = pd.read_excel("240510_df_2_1.xlsx")
-
-st.set_page_config(page_title="🖼️여행은역시제주조🖼️", layout='wide')
-
-df = pd.read_excel("240510_df_2_1.xlsx")
-
 ###########################
 # ------ 함수들 --------
 ###########################
@@ -24,8 +19,8 @@ def category_counts():
     category_counts.columns = ['대분류', 'count']
 
     # 데이터 개수 시각화
-    fig = px.bar(category_counts, x='대분류', y='count', title='카테고리별 데이터 개수',
-                labels={'count': '데이터 개수', '대분류': '카테고리'}, color='count')
+    fig = px.bar(category_counts, x='대분류', y='count', title='업종별 데이터 개수',
+                labels={'count': '데이터 개수', '대분류': '업종'}, color='count')
     
     fig.update_layout(
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
@@ -42,8 +37,8 @@ def category_likes():
     category_likes = df.groupby('대분류')['good'].sum().reset_index()
 
     # 좋아요 수 시각화
-    fig = px.bar(category_likes, x='대분류', y='good', title='카테고리별 총 좋아요 수',
-                labels={'good': '총 좋아요 수', '대분류': '카테고리'}, color='good')
+    fig = px.bar(category_likes, x='대분류', y='good', title='업종별 총 좋아요 수',
+                labels={'good': '총 좋아요 수', '대분류': '업종'}, color='good')
 
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig)
@@ -80,22 +75,11 @@ def category_counts_likes():
     ))
 
     # 레이아웃 설정
-    fig.update_layout(
-        title='카테고리별 데이터 개수 및 좋아요 수',
-        xaxis_title='카테고리',
-        yaxis_title='데이터 개수',
-        legend_title='범례',
-        plot_bgcolor='white'
-    )
+    fig.update_layout(title='업종별 데이터 개수 및 좋아요 수',xaxis_title='업종',yaxis_title='데이터 개수',
+        legend_title='범례',plot_bgcolor='white')
 
     # 두 번째 y축 추가 설정
-    fig.update_layout(
-        yaxis2=dict(
-            title='총 좋아요 수',
-            overlaying='y',
-            side='right'
-        )
-    )
+    fig.update_layout(yaxis2=dict(title='총 좋아요 수',overlaying='y',side='right'))
 
     # Streamlit에서 표시
     st.plotly_chart(fig)
@@ -116,11 +100,11 @@ def category_counts_likes_divide():
     category_like_ratio_df.columns = ['대분류', '좋아요 수 비율']
 
     # 데이터 시각화
-    fig = px.bar(category_like_ratio_df, x='대분류', y='좋아요 수 비율', title='카테고리별 데이터수 대비 좋아요 수 비율',
-                labels={'좋아요 수 비율': '좋아요 수 비율', '대분류': '카테고리'}, color='좋아요 수 비율')
+    fig = px.bar(category_like_ratio_df, x='대분류', y='좋아요 수 비율', title='업종별 데이터수 대비 좋아요 수 비율',
+                labels={'좋아요 수 비율': '좋아요 수 비율', '대분류': '업종'}, color='좋아요 수 비율')
 
     # 그래프 설정
-    fig.update_layout(xaxis_title='카테고리', yaxis_title='좋아요 수 비율',
+    fig.update_layout(xaxis_title='업종', yaxis_title='좋아요 수 비율',
                     plot_bgcolor='white', xaxis={'categoryorder':'total descending'})
 
     # Streamlit에 피규어 표시
@@ -515,124 +499,6 @@ def year_category_good_fig2():
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig2)
 
-#################
-# ---- 메인 ----
-#################
-
-# 데이터 접었다 필 수 있게 만들어놓기
-with st.expander("데이터 보기"):
-	st.dataframe(df, height=200)
-# -----------------------------
-
-# 카테고리별
-st.subheader("카테고리별")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2:
-    tab1, tab2, tab3, tab4 = st.tabs(["데이터 개수", "총 좋아요 수", "각 카테고리별 데이터수, 좋아요수 계산","데이터수 대비 좋아요 수 비율"])
-    with tab1:
-        category_counts()
-    with tab2:
-        category_likes()
-    with tab3:
-        category_counts_likes()
-    with tab4:
-        category_counts_likes_divide()
-
-st.markdown('---')
-
-
-# 전체 키워드 빈도수 (상위 20개)
-st.subheader("전체 키워드 빈도수 (상위 20개)")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    keyword_frequency()
-
-# 업종별 많이 나오는 키워드수
-st.subheader("업종별 많이 나오는 키워드수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    category_keyword()
-
-# 월별 많이 나오는 키워드수
-st.subheader("월별 많이 나오는 키워드수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    month_keyword()
-
-# 업종별 게시글수
-st.subheader("업종별 게시글수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    category_posts()
-
-# 월별 게시글수/좋아요수
-st.subheader("월별 게시글수/좋아요수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2 = st.tabs(["월별 게시글 수", "월별 좋아요 수"])
-    with tab1:
-        month_posts()
-    with tab2:
-        month_good()
-
-# 월별 대분류별 게시글수/좋아요수/게시글당평균좋아요비율
-st.subheader("월별 대분류별 게시글수/좋아요수/비율")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2, tab3 = st.tabs(["월별 대분류별 게시글 수", "월별 대분류별 좋아요 수", "월별 대분류별 게시글당 평균 좋아요 비율"])
-    with tab1:
-        month_category_posts()
-    with tab2:
-        month_category_good()
-    with tab3:
-        month_category_posts_good()
-
-# 연도별 많이 나오는 키워드 수
-st.subheader("연도별 많이 나오는 키워드 수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    year_keyword()
-
-# 연도별 좋아요 수
-st.subheader("연도별 좋아요 수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2 = st.tabs(["막대그래프", "꺾은선그래프"])
-    with tab1:
-        year_good_fig1()
-    with tab2:
-        year_good_fig2()
-
-# 연도별 대분류별 좋아요 합계
-st.subheader("연도별 대분류별 좋아요 합계")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2 = st.tabs(["막대그래프", "꺾은선그래프"])
-    with tab1:
-        year_category_good_fig2()
-    with tab2:
-        year_category_good_fig1()
-
 # 연도별 대분류별 게시물수
 def year_category_post_fig1():
     grouped_post_count = df.groupby(['year', '대분류']).agg(post_count=('post', 'count')).reset_index()
@@ -670,41 +536,7 @@ def year_category_post_fig2():
     )
     return st.plotly_chart(fig2)
 
-st.subheader("연도별 대분류별 게시물수")
-tab1, tab2 = st.tabs(["막대그래프", "꺾은선그래프"])
-with tab1:
-    year_category_good_fig2()
-with tab2:
-    year_category_good_fig1()
-
-
-# 업종과 빈도의 연관성
-st.subheader("업종과 빈도의 연관성")
-# def category_frequency():
-#     # 스피어만 순위 상관계수 계산
-#     year_count = df.groupby(['year','category_numeric']).agg(count=('post','count')).reset_index()
-#     correlation = year_count[['category_numeric', 'count']].corr(method='spearman').iloc[0, 1]
-
-#     # 산점도 그리기
-#     fig = px.scatter(year_count, x='category_numeric', y='count',
-#                     labels={'category_numeric': '업종', 'count': '빈도'},
-#                     title=f'업종과 빈도의 연관성: 스피어만 순위 상관계수 {correlation:.2f}')
-
-#     # 그래프 레이아웃 설정
-#     fig.update_layout(xaxis_title='업종', yaxis_title='빈도')
-
-#     # Streamlit에 그래프 표시
-#     return st.plotly_chart(fig)
-# category_frequency()
-
-# 업종과 게시글 수의 상관관계 ## 이거 월별 대분류별 게시글 수랑 겹칠듯
-# def category_post():
-
-# 연도와 게시글 수의 상관관계
-# def year_posts():
-
-# 이모티콘 수와의 관계
-st.subheader("이모티콘 수와 좋아요 수의 관계")
+# 이모티콘 수와 좋아요 수의 관계
 def emoji_good():
     def count_emojis(text):
         return sum(1 for i in text if emoji.is_emoji(i))
@@ -725,10 +557,8 @@ def emoji_good():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-emoji_good()
 
 # 게시글 길이와 좋아요 수의 관계
-st.subheader("게시글 길이와 좋아요 수의 관계")
 def lenpost_good():
     # 게시글 길이 계산
     df['post_len'] = df['post'].apply(len)
@@ -746,10 +576,8 @@ def lenpost_good():
 
     # Streamlit에 그래프 표시
     st.plotly_chart(fig)
-lenpost_good()
 
 # 아이디 길이와 follower의 관계
-st.subheader("아이디 길이와 follower의 관계")
 def lenID_follower():
     # 팔로워 데이터 집계
     followers = df.groupby('ID')['follower'].unique()
@@ -772,10 +600,8 @@ def lenID_follower():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-lenID_follower()
 
 # follower와 좋아요 수의 관계
-st.subheader("follower와 좋아요 수의 관계")
 def follower_good():
     # 팔로워 수와 좋아요 수 집계
     fg = df.groupby(['ID', 'follower']).agg(good_sum=('good', 'sum')).reset_index()
@@ -793,10 +619,8 @@ def follower_good():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-follower_good()
 
 # follower와 게시글 수의 관계
-st.subheader("follower와 게시글 수의 관계")
 def follower_post():
     # 팔로워 수와 게시글 수 집계
     fp = df.groupby(['ID', 'follower']).agg(post_count=('post', 'count')).reset_index()
@@ -814,38 +638,3 @@ def follower_post():
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
-follower_post()
-
-
-####################
-# ---- 사이드바 ----
-####################
-# 이미지 파일 열기
-image = Image.open('그림3.png')
-# Streamlit 앱에 이미지 표시
-st.sidebar.image(image, width=70)
-st.sidebar.header("역시여행은제주조")
-
-st.sidebar.header("항목을 선택하세요:")
-
-year = st.sidebar.multiselect(
-    "Select Year",
-    options = df["year"].unique(),
-    default = df["year"].unique()
-)
-
-month = st.sidebar.multiselect(
-    "Select Month",
-    options = df["month"].unique(),
-    default = df["month"].unique()
-)
-
-대분류 = st.sidebar.multiselect(
-    "Select 업종(대분류)",
-    options = df["대분류"].unique(),
-    default = df["대분류"].unique()
-)
-
-df_selection = df.query(
-    "year == @year & month == @month & 대분류 == @대분류"
-)
