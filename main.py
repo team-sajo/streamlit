@@ -14,15 +14,6 @@ df = pd.read_excel("240510_df_2_1.xlsx")
 # ---- 메인 ----
 #################
 
-col1, col2 = st.columns([1, 4])
-with col1:
-    # 이미지 파일 열기
-    image = Image.open('그림3.png')
-    # Streamlit 앱에 이미지 표시
-    st.image(image, width=80)
-with col2:
-    st.header("(제목어쩌구저쩌구) SAJO의 대시보드")
-
 # 데이터 접었다 필 수 있게 만들어놓기
 with st.expander("데이터 보기"):
 	st.dataframe(df, height=200)
@@ -766,6 +757,11 @@ follower_post()
 ####################
 # ---- 사이드바 ----
 ####################
+# 이미지 파일 열기
+image = Image.open('그림3.png')
+# Streamlit 앱에 이미지 표시
+st.sidebar.image(image, width=70)
+st.sidebar.header("역시여행은제주조")
 
 st.sidebar.header("항목을 선택하세요:")
 
