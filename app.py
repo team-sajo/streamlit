@@ -12,6 +12,7 @@ from main import category_counts_likes
 from main import category_counts_likes_divide
 from main import month_category_good
 from main import month_keyword
+from main import year_month_keyword
 from main import keyword_frequency
 from main import category_keyword
 from main import month_posts
@@ -53,64 +54,97 @@ df = pd.read_excel("240510_df_2_1.xlsx")
 with st.expander("📑⛏️ 우리가 찾은 데이터 📑⛏️"):
 	st.dataframe(df, height=250)
 # -----------------------------
-# # 연-월별 대분류별 게시글수
-# st.subheader("연-월별 대분류별 게시글수")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("d d d d d d d d")
-# with col2: 
-#     month_category_posts()
 
-# # 년도별 대분류별 게시글수
-# st.subheader("년도별 대분류별 게시글수")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("d d d d d d d d")
-# with col2: 
-#     category_posts_day()
+# 연-월별 대분류별 게시글수
+def gr50():
+    st.subheader("연-월별 대분류별 게시글수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d")
+    with col2: 
+        month_category_posts()
 
-# # 년도별 대분류별 게시글수- 월단위
-# st.subheader("년도별 대분류별 게시글수- 월단위")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("d d d d d d d d")
-# with col2: 
-#     category_posts_month()
+# 연도별 대분류별 게시글수- 일단위
+def gr51():
+    st.subheader("연도별 대분류별 게시글수- 일단위")
+    col1, col2 = st.columns([1,4])
+    with col1:
+        st.subheader("d d d d d d d d")
+        st.markdown("- ")
+        st.markdown("- ")
+        st.markdown("- ")
+    with col2: 
+        category_posts_day()
 
-# # 연-월별 대분류별 좋아요 수
-# st.subheader("연-월별 대분류별 좋아요 수")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("d d d d d d d d")
-# with col2: 
-#     month_category_good()
+# 연도별 대분류별 게시글수- 월단위
+def gr52():
+    st.subheader("연도별 대분류별 게시글수- 월단위")
+    col1, col2 = st.columns([1,4])
+    with col1:
+        st.subheader("d d d d d d")
+        st.markdown("- ")
+        st.markdown("- ")
+        st.markdown("- ")
+    with col2: 
+        category_posts_month()
 
-# # 연-월별 많이 나오는 키워드
-# st.subheader("연-월별 많이 나오는 키워드")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("d d d d d d d d")
-# with col2: 
-#     month_keyword()
+# 연-월별 대분류별 좋아요 수
+def gr53():
+    st.subheader("연-월별 대분류별 좋아요 수")
+    col1, col2 = st.columns([1,4])
+    with col1:
+        st.subheader("d d d d d d")
+    with col2: 
+        month_category_good()
 
-# # 계정 ID별 월별 좋아요 수
-# st.subheader("계정 ID별 월별 좋아요 수")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("d d d d d d d d")
-# with col2: 
-#     ID_month_good()
+# 연-월별 많이 나오는 키워드
+def gr54():
+    st.subheader("연-월별 많이 나오는 키워드")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d")
+        st.markdown("- ")
+        st.markdown("- ")
+        st.markdown("- ")
+    with col2: 
+        year_month_keyword()
 
-# # 월별 ID별 게시글 수 
-# st.subheader("월별 ID별 게시글 수 ")
-# col1, col2 = st.columns([1,4])
-# with col1:
-#     st.subheader("인사이트")
-#     st.markdown("- 활동한만큼 좋아요수가 많아진다."
-#                 "- 게시글을 꾸준히 올려야 좋아요 수가 많아진다."
-#                 "- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적이다.")
-# with col2: 
-#     ID_posts()
+# 오래걸림..
+# 많이 등장하는 키워드와 좋아요의 관계
+def gr49():
+    st.subheader("많이 등장하는 키워드와 좋아요의 관계")
+    col1, col2 = st.columns([1,4])
+    with col1:
+        st.subheader("d d d d d d")
+        st.markdown("- 제주도가 많이 찍혔는데 그 이유가 사람들이 좋아요를 많이 눌러서다?")
+        st.markdown("- ")
+        st.markdown("- ")
+    with col2: 
+        keyword_good()
+
+# 계정 ID별 월별 좋아요 수
+def gr55():
+    st.subheader("계정 ID별 월별 좋아요 수")
+    col1, col2 = st.columns([1,4])
+    with col1:
+        st.subheader("d d d d d d")
+        st.markdown("- ")
+        st.markdown("- ")
+        st.markdown("- ")
+    with col2: 
+        ID_month_good()
+
+# 월별 ID별 게시글 수 
+def gr56():
+    st.subheader("월별 ID별 게시글 수 ")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d")
+        st.markdown("- 활동한만큼 좋아요수가 많아진다.")
+        st.markdown("- 게시글을 꾸준히 올려야 좋아요 수가 많아진다.")
+        st.markdown("- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적이다.")
+    with col2: 
+        ID_posts()
 # -----------------------------
 # 업종별 데이터수 & 좋아요수
 def gr1():
@@ -339,11 +373,40 @@ def gr10():
 # 이미지 파일 열기
 image = Image.open('그림3.png')
 # Streamlit 앱에 이미지 표시
-st.sidebar.image(image, width=310)
+st.sidebar.image(image, width=308)
 
 st.sidebar.header("그래프를 선택하세요:")
 
-status = st.sidebar.radio('graph', [
+status2 = st.sidebar.radio('시계열분석', ['선택x',
+                                        '연-월별 대분류별 게시글수',
+                                        '연도별 대분류별 게시글수- 일단위', #시계열분석
+                                        '연도별 대분류별 게시글수- 월단위', #시계열분석
+                                        '연-월별 대분류별 좋아요 수', #시계열분석
+                                        '✅연-월별 많이 나오는 키워드', # 시계열분석
+                                        '많이 등장하는 키워드와 좋아요의 관계', #시계열분석
+                                        '✅계정 ID별 월별 좋아요수', # 시계열분석
+                                        '✅월별 ID별 게시글수', # 시계열분석
+                                    ])
+
+if status2 == '연-월별 대분류별 게시글수' : #시계열분석
+    gr50()
+elif status2 == '연도별 대분류별 게시글수- 일단위': #시계열분석
+    gr51()
+elif status2 == '연도별 대분류별 게시글수- 월단위' : # 시계열분석
+    gr52()
+elif status2 == '연-월별 대분류별 좋아요 수' : # 시계열분석
+    gr53()
+elif status2 == '✅연-월별 많이 나오는 키워드' : # 시계열분석
+    gr54()
+elif status2 == '많이 등장하는 키워드와 좋아요의 관계': #시계열분석
+    gr49()
+elif status2 == '✅계정 ID별 월별 좋아요수' : # 시계열분석
+    gr55()
+elif status2 == '✅월별 ID별 게시글수' : # 시계열분석
+    gr56()
+
+
+status = st.sidebar.radio('요소분석', ['선택x',
                                     '업종별 게시물수 & 좋아요수',
                                     '전체 키워드 빈도수(상위20개)',
                                     '업종별 많이 나오는 키워드수',
