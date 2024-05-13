@@ -3,6 +3,7 @@ import plotly.express as px # pip install plotly-express
 import streamlit as st # pip install streamlit
 import plotly.graph_objects as go # pip install plotly
 from collections import Counter
+import emoji # pip install emoji
 
 st.set_page_config(page_title="🖼️4조의 시각화🖼️", layout='wide')
 
@@ -17,7 +18,7 @@ with st.expander("데이터 보기"):
 #################
 
 # 각 카테고리별 데이터 개수 계산
-st.subheader("각 카테고리별 데이터 개수 계산")
+st.subheader("카테고리별 데이터 개수 계산")
 def category_counts():
     category_counts = df['대분류'].value_counts().reset_index()
     category_counts.columns = ['대분류', 'count']
@@ -31,7 +32,7 @@ def category_counts():
 category_counts()
 
 # 각 카테고리별 총 좋아요 수 계산
-st.subheader("각 카테고리별 총 좋아요 수 계산")
+st.subheader("카테고리별 총 좋아요 수 계산")
 def category_likes():
     category_likes = df.groupby('대분류')['good'].sum().reset_index()
 
@@ -600,7 +601,144 @@ with tab1:
 with tab2:
     year_category_good_fig1()
 
+
+# 업종과 빈도의 연관성
+st.subheader("업종과 빈도의 연관성")
+# def category_frequency():
+#     # 스피어만 순위 상관계수 계산
+#     year_count = df.groupby(['year','category_numeric']).agg(count=('post','count')).reset_index()
+#     correlation = year_count[['category_numeric', 'count']].corr(method='spearman').iloc[0, 1]
+
+#     # 산점도 그리기
+#     fig = px.scatter(year_count, x='category_numeric', y='count',
+#                     labels={'category_numeric': '업종', 'count': '빈도'},
+#                     title=f'업종과 빈도의 연관성: 스피어만 순위 상관계수 {correlation:.2f}')
+
+#     # 그래프 레이아웃 설정
+#     fig.update_layout(xaxis_title='업종', yaxis_title='빈도')
+
+#     # Streamlit에 그래프 표시
+#     return st.plotly_chart(fig)
+# category_frequency()
+
+# 업종과 게시글 수의 상관관계 ## 이거 월별 대분류별 게시글 수랑 겹칠듯
+# def category_post():
+
+# 연도와 게시글 수의 상관관계
+# def year_posts():
+
+# 이모티콘 수와의 관계
+st.subheader("이모티콘 수와 좋아요 수의 관계")
+def emoji_good():
+    def count_emojis(text):
+        return sum(1 for i in text if emoji.is_emoji(i))
+
+    # 'post' 열에 이모티콘 개수 계산하여 새로운 열에 저장
+    df['emoji_count'] = df['post'].apply(count_emojis)
+
+    # 상관관계 계산
+    correlation = df[['emoji_count', 'good']].corr().iloc[0, 1]
+
+    # 산점도 그리기
+    fig = px.scatter(df, x='emoji_count', y='good', trendline="ols",
+                    labels={'emoji_count': 'Emoji 개수', 'good': 'Good'},
+                    title=f'Emoji 개수와 Good 열의 상관관계: {correlation:.2f}')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(xaxis_title='Emoji 개수', yaxis_title='Good')
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+emoji_good()
+
 # 게시글 길이와 좋아요 수의 관계
+st.subheader("게시글 길이와 좋아요 수의 관계")
+def lenpost_good():
+    # 게시글 길이 계산
+    df['post_len'] = df['post'].apply(len)
+
+    # 상관관계 계산
+    correlation = df[['post_len', 'good']].corr().iloc[0, 1]
+
+    # 산점도 그리기
+    fig = px.scatter(df, x='post_len', y='good', trendline="ols",
+                    labels={'post_len': '게시글 길이', 'good': '좋아요'},
+                    title=f'게시글 길이와 좋아요의 상관관계: {correlation:.2f}')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(xaxis_title='게시글 길이', yaxis_title='좋아요')
+
+    # Streamlit에 그래프 표시
+    st.plotly_chart(fig)
+lenpost_good()
+
+# 아이디 길이와 follower의 관계
+st.subheader("아이디 길이와 follower의 관계")
+def lenID_follower():
+    # 팔로워 데이터 집계
+    followers = df.groupby('ID')['follower'].unique()
+    followers = pd.DataFrame(followers)
+    followers.reset_index(inplace=True)
+    followers['ID_length'] = followers['ID'].apply(len)
+    followers = followers.explode('follower')
+    followers['follower'] = followers['follower'].astype('int')
+
+    # 상관관계 계산
+    correlation = followers[['ID_length', 'follower']].corr().iloc[0, 1]
+
+    # 산점도 그리기
+    fig = px.scatter(followers, x='ID_length', y='follower',
+                    labels={'ID_length': '아이디 길이', 'follower': '팔로워 수'},
+                    title=f'아이디 길이와 팔로워의 상관관계: {correlation:.2f}')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(xaxis_title='아이디 길이', yaxis_title='팔로워')
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+lenID_follower()
+
+# follower와 좋아요 수의 관계
+st.subheader("follower와 좋아요 수의 관계")
+def follower_good():
+    # 팔로워 수와 좋아요 수 집계
+    fg = df.groupby(['ID', 'follower']).agg(good_sum=('good', 'sum')).reset_index()
+
+    # 상관관계 계산
+    correlation = fg['follower'].corr(fg['good_sum'])
+
+    # 산점도 그리기
+    fig = px.scatter(fg, x='follower', y='good_sum', trendline="ols",
+                    labels={'follower': '팔로워 수', 'good_sum': '좋아요 수'},
+                    title=f'팔로워 수와 좋아요 수의 상관관계: {correlation:.2f}')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(xaxis_title='팔로워 수', yaxis_title='좋아요 수')
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+follower_good()
+
+# follower와 게시글 수의 관계
+st.subheader("follower와 게시글 수의 관계")
+def follower_post():
+    # 팔로워 수와 게시글 수 집계
+    fp = df.groupby(['ID', 'follower']).agg(post_count=('post', 'count')).reset_index()
+
+    # 상관관계 계산
+    correlation = fp['follower'].corr(fp['post_count'])
+
+    # 산점도 그리기
+    fig = px.scatter(fp, x='follower', y='post_count', trendline="ols",
+                    labels={'follower': '팔로워 수', 'post_count': '게시글 수'},
+                    title=f'팔로워수와 게시글 수의 상관관계: {correlation:.2f}')
+
+    # 그래프 레이아웃 설정
+    fig.update_layout(xaxis_title='팔로워 수', yaxis_title='게시글 수')
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig)
+follower_post()
 
 
 ####################
