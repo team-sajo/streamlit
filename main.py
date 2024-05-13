@@ -18,6 +18,35 @@ df = pd.read_excel("240510_df_2_1.xlsx")
 with st.expander("데이터 보기"):
 	st.dataframe(df, height=200)
 
+# 연-월별 대분류별 게시글수
+st.subheader("연-월별 대분류별 게시글수")
+def month_category_posts():
+    df = pd.read_excel('240512_df.xlsx',parse_dates=['date'])
+    df['date'] = pd.to_datetime(df['date'])  # 'date' 열을 datetime 형식으로 변환
+    df['year_month'] = df['date'].dt.to_period('M')
+
+    # 연도와 월로 그룹화하여 게시글 수 요약
+    df_year_month = df.groupby(['year_month', '대분류']).size().reset_index(name='게시글')
+
+    # Pandas Period를 문자열로 변환
+    df_year_month['year_month'] = df_year_month['year_month'].dt.strftime('%Y-%m')
+
+    # pivot을 사용하여 데이터 재구성
+    df_pivot = df_year_month.pivot(index='year_month', columns='대분류', values='게시글')
+
+    # Plotly를 사용하여 선 그래프 생성
+    fig = px.line(df_pivot, x=df_pivot.index, y=df_pivot.columns,
+                labels={'value': '게시글 수', 'year_month': '날짜', 'variable': '대분류'},
+                markers=True, title='연-월별 대분류별 게시글 수')
+
+    # streamlit에 그래프 표시
+    return st.plotly_chart(fig, use_container_width=True)
+
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("lorem lorem lorem lorem lorem lorem lorem lorem lorem")
+with col2: 
+    month_category_posts()
 
 st.subheader("카테고리별")
 tab1, tab2, tab3, tab4 = st.tabs(["데이터 개수", "총 좋아요 수", "각 카테고리별 데이터수, 좋아요수 계산","데이터수 대비 좋아요 수 비율"])
