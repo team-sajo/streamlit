@@ -4,48 +4,62 @@ import streamlit as st # pip install streamlit
 import plotly.graph_objects as go # pip install plotly
 from collections import Counter
 import emoji # pip install emoji
+from PIL import Image
 
 st.set_page_config(page_title="🖼️4조의 시각화🖼️", layout='wide')
 
 df = pd.read_excel("240510_df_2_1.xlsx")
 
-# 데이터 접었다 필 수 있게 만들어놓기
-with st.expander("데이터 보기"):
-	st.dataframe(df, height=200)
-
 #################
 # ---- 메인 ----
 #################
 
+col1, col2 = st.columns([1, 4])
+with col1:
+    # 이미지 파일 열기
+    image = Image.open('그림3.png')
+    # Streamlit 앱에 이미지 표시
+    st.image(image, width=80)
+with col2:
+    st.header("(제목어쩌구저쩌구) SAJO의 대시보드")
+
+# 데이터 접었다 필 수 있게 만들어놓기
+with st.expander("데이터 보기"):
+	st.dataframe(df, height=200)
+
+
+st.subheader("카테고리별")
+tab1, tab2, tab3, tab4 = st.tabs(["데이터 개수", "총 좋아요 수", "각 카테고리별 데이터수, 좋아요수 계산","데이터수 대비 좋아요 수 비율"])
+
 # 각 카테고리별 데이터 개수 계산
-st.subheader("카테고리별 데이터 개수 계산")
 def category_counts():
     category_counts = df['대분류'].value_counts().reset_index()
     category_counts.columns = ['대분류', 'count']
 
     # 데이터 개수 시각화
-    fig1 = px.bar(category_counts, x='대분류', y='count', title='카테고리별 데이터 개수',
+    fig = px.bar(category_counts, x='대분류', y='count', title='카테고리별 데이터 개수',
                 labels={'count': '데이터 개수', '대분류': '카테고리'}, color='count')
+    
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'),    
+)
 
     # Streamlit에 피규어 표시
-    return st.plotly_chart(fig1)
-category_counts()
-
+    return fig
 # 각 카테고리별 총 좋아요 수 계산
-st.subheader("카테고리별 총 좋아요 수 계산")
 def category_likes():
     category_likes = df.groupby('대분류')['good'].sum().reset_index()
 
     # 좋아요 수 시각화
-    fig2 = px.bar(category_likes, x='대분류', y='good', title='카테고리별 총 좋아요 수',
+    fig = px.bar(category_likes, x='대분류', y='good', title='카테고리별 총 좋아요 수',
                 labels={'good': '총 좋아요 수', '대분류': '카테고리'}, color='good')
 
     # Streamlit에 피규어 표시
-    return st.plotly_chart(fig2)
-category_likes()
-
+    return fig
 # 각 카테고리별 데이터수, 좋아요수 계산
-st.subheader("각 카테고리별 데이터수, 좋아요수 계산")
 def category_counts_likes():
     # 각 카테고리별 데이터 개수 계산
     category_counts = df['대분류'].value_counts()
@@ -96,10 +110,7 @@ def category_counts_likes():
 
     # Streamlit에서 표시
     st.plotly_chart(fig)
-category_counts_likes()
-
-# 카테고리 대비 좋아요 수 비율
-st.subheader("카테고리 대비 좋아요 수 비율")
+# 데이터수 대비 좋아요 수 비율
 def category_counts_likes_divide():
     # 각 카테고리별 데이터 개수 계산
     category_counts = df['대분류'].value_counts()
@@ -115,7 +126,7 @@ def category_counts_likes_divide():
     category_like_ratio_df.columns = ['대분류', '좋아요 수 비율']
 
     # 데이터 시각화
-    fig = px.bar(category_like_ratio_df, x='대분류', y='좋아요 수 비율', title='카테고리 대비 좋아요 수 비율',
+    fig = px.bar(category_like_ratio_df, x='대분류', y='좋아요 수 비율', title='카테고리별 데이터수 대비 좋아요 수 비율',
                 labels={'좋아요 수 비율': '좋아요 수 비율', '대분류': '카테고리'}, color='좋아요 수 비율')
 
     # 그래프 설정
@@ -124,7 +135,18 @@ def category_counts_likes_divide():
 
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig)
-category_counts_likes_divide()
+
+with tab1:
+    st.plotly_chart(category_counts())
+with tab2:
+    st.plotly_chart(category_likes())
+with tab3:
+    category_counts_likes()
+with tab4:
+    category_counts_likes_divide()
+
+st.markdown('---')
+
 
 # 전체 키워드 빈도수 (상위 20개)
 st.subheader("전체 키워드 빈도수 (상위 20개)")
