@@ -78,11 +78,12 @@ with col1:
 with col2: 
     month_keyword()
 
-# 많이 등장하는 키워드와 좋아요의 관계
-st.subheader("많이 등장하는 키워드와 좋아요의 관계")
-st.subheader("의문점")
-st.markdown("- 제주도가 많이 찍혔는데, 그이유가 사람들이 좋아요를 많이 눌러서다?")
-keyword_good()
+## 오래걸림..
+# # 많이 등장하는 키워드와 좋아요의 관계
+# st.subheader("많이 등장하는 키워드와 좋아요의 관계")
+# st.subheader("의문점")
+# st.markdown("- 제주도가 많이 찍혔는데, 그이유가 사람들이 좋아요를 많이 눌러서다?")
+# keyword_good()
 
 # 계정 ID별 월별 좋아요 수
 st.subheader("계정 ID별 월별 좋아요 수")
@@ -110,8 +111,7 @@ with col2:
 # 이미지 파일 열기
 image = Image.open('그림3.png')
 # Streamlit 앱에 이미지 표시
-st.sidebar.image(image, width=70)
-st.sidebar.header("역시여행은제주조")
+st.sidebar.image(image, width=300)
 
 st.sidebar.header("항목을 선택하세요:")
 

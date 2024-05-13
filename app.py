@@ -28,6 +28,14 @@ from main import lenpost_good
 from main import lenID_follower
 from main import follower_good
 from main import follower_post
+from main import month_category_posts
+from main import category_posts_day
+from main import category_posts_month
+from main import month_category_good
+from main import keyword_good
+from main import month_keyword
+from main import ID_month_good
+from main import ID_posts
 
 
 st.set_page_config(page_title="🖼️여행은역시제주조🖼️", layout='wide')
@@ -41,9 +49,67 @@ df = pd.read_excel("240510_df_2_1.xlsx")
 
 # 데이터 접었다 필 수 있게 만들어놓기
 with st.expander("📑⛏️ 우리가 찾은 데이터 📑⛏️"):
-	st.dataframe(df, height=200)
+	st.dataframe(df, height=250)
 # -----------------------------
+# # 연-월별 대분류별 게시글수
+# st.subheader("연-월별 대분류별 게시글수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     month_category_posts()
 
+# # 년도별 대분류별 게시글수
+# st.subheader("년도별 대분류별 게시글수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     category_posts_day()
+
+# # 년도별 대분류별 게시글수- 월단위
+# st.subheader("년도별 대분류별 게시글수- 월단위")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     category_posts_month()
+
+# # 연-월별 대분류별 좋아요 수
+# st.subheader("연-월별 대분류별 좋아요 수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     month_category_good()
+
+# # 연-월별 많이 나오는 키워드
+# st.subheader("연-월별 많이 나오는 키워드")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     month_keyword()
+
+# # 계정 ID별 월별 좋아요 수
+# st.subheader("계정 ID별 월별 좋아요 수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     ID_month_good()
+
+# # 월별 ID별 게시글 수 
+# st.subheader("월별 ID별 게시글 수 ")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("인사이트")
+#     st.markdown("- 활동한만큼 좋아요수가 많아진다."
+#                 "- 게시글을 꾸준히 올려야 좋아요 수가 많아진다."
+#                 "- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적이다.")
+# with col2: 
+#     ID_posts()
+# -----------------------------
 # 업종별
 st.subheader("업종별")
 col1, col2 = st.columns([1,4])

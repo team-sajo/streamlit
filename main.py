@@ -30,9 +30,14 @@ def month_category_posts():
     fig = px.line(df_pivot, x=df_pivot.index, y=df_pivot.columns,
                 labels={'value': '게시글 수', 'year_month': '날짜', 'variable': '대분류'},
                 markers=True, title='연-월별 대분류별 게시글 수')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
     
 # 날짜별 대분류별 게시글 수
 # def day_category_posts():
@@ -60,6 +65,11 @@ def month_category_posts():
             ticktext=x_tickvals
         )
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     return st.plotly_chart(fig, use_container_width=True)
 
@@ -89,6 +99,11 @@ def category_posts_day():
         tickvals=[str(x) for x in df_pivot_year.index],
         ticktext=[pd.to_datetime(x).strftime('%Y-%m') for x in df_pivot_year.index]
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # 스트림릿 애플리케이션에 그래프 표시
     st.plotly_chart(fig, use_container_width=True)
@@ -120,6 +135,11 @@ def category_posts_month():
             fig.update_xaxes(title_text='월')
             fig.update_yaxes(title_text='게시글 수')
             fig.update_layout(xaxis_tickangle=-45)
+            fig.update_layout(
+            margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+            paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+            plot_bgcolor="white",    # 플롯 영역 배경색 설정
+            title_font=dict(color='black'))
             
             # 현재 탭에 그래프 출력
             with tab:
@@ -141,6 +161,11 @@ def month_category_good():
     # x축과 y축의 레이블 설정
     fig.update_xaxes(title_text='날짜', tickangle=-45)
     fig.update_yaxes(title_text='좋아요 수')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # 각 선에 대한 마커 설정
     markers = ['circle', 'square', 'triangle-up', 'diamond', 'x-thin']
@@ -185,6 +210,11 @@ def month_keyword():
                 yaxis_title="빈도",
                 xaxis={'categoryorder':'total descending'}  # 내림차순으로 정렬
             )
+            fig.update_layout(
+            margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+            paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+            plot_bgcolor="white",    # 플롯 영역 배경색 설정
+            title_font=dict(color='black'))
             
             # 현재 탭에 streamlit으로 그래프 출력
             with tab:
@@ -243,6 +273,11 @@ def keyword_good():
         yaxis_title='좋아요 수',
         barmode='group'
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # Streamlit으로 그래프 출력
     st.plotly_chart(fig, use_container_width=True)
@@ -267,6 +302,11 @@ def ID_month_good():
     # 그래프 세부사항 설정
     fig.update_traces(marker=dict(size=3))  # 마커 크기 조절
     fig.update_layout(xaxis_title='월', yaxis_title='좋아요 수', legend_title_text='ID')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     fig.update_xaxes(tickangle=45)
 
     # Streamlit으로 그래프 출력
@@ -292,6 +332,11 @@ def ID_posts():
     # 그래프 세부사항 설정
     fig.update_traces(marker=dict(size=5))  # 마커 크기 조절
     fig.update_layout(xaxis_title='월', yaxis_title='게시글 수', legend_title_text='ID')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     fig.update_xaxes(tickangle=45)
 
     # Streamlit으로 그래프 출력
@@ -314,8 +359,7 @@ def category_counts():
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
     paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
-    title_font=dict(color='black'),    
-)
+    title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig)
@@ -327,6 +371,12 @@ def category_likes():
     # 좋아요 수 시각화
     fig = px.bar(category_likes, x='대분류', y='good', title='업종별 총 좋아요 수',
                 labels={'good': '총 좋아요 수', '대분류': '업종'}, color='good')
+    
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig)
@@ -364,7 +414,12 @@ def category_counts_likes():
 
     # 레이아웃 설정
     fig.update_layout(title='업종별 데이터 개수 및 좋아요 수',xaxis_title='업종',yaxis_title='데이터 개수',
-        legend_title='범례',plot_bgcolor='white')
+        legend_title='범례')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # 두 번째 y축 추가 설정
     fig.update_layout(yaxis2=dict(title='총 좋아요 수',overlaying='y',side='right'))
@@ -393,7 +448,12 @@ def category_counts_likes_divide():
 
     # 그래프 설정
     fig.update_layout(xaxis_title='업종', yaxis_title='좋아요 수 비율',
-                    plot_bgcolor='white', xaxis={'categoryorder':'total descending'})
+                     xaxis={'categoryorder':'total descending'})
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig)
@@ -421,7 +481,11 @@ def keyword_frequency():
                 labels={'Frequency': '빈도', 'Keyword': '키워드'})
     fig.update_traces(texttemplate='%{y}', textposition='outside')  # 막대 위에 빈도 수 표시
     fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickangle=-45)  # 텍스트 크기 조정 및 x축 라벨 회전
-
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig)
 
@@ -456,8 +520,12 @@ def category_keyword():
         fig = go.Figure(go.Bar(x=keywords, y=frequencies, marker_color='blue'))
         fig.update_layout(title=f'{industry} - 상위 10개 키워드 빈도수',
                         xaxis_title='키워드',
-                        yaxis_title='빈도수',
-                        plot_bgcolor='white')
+                        yaxis_title='빈도수')
+        fig.update_layout(
+        margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+        paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+        plot_bgcolor="white",    # 플롯 영역 배경색 설정
+        title_font=dict(color='black'))
         
         with tabs[i]:
             st.plotly_chart(fig)
@@ -494,8 +562,12 @@ def month_keyword():
         fig = go.Figure(go.Bar(x=keywords, y=frequencies, marker_color='blue'))
         fig.update_layout(title=f'{month}월 - 상위 10개 키워드 빈도수',
                         xaxis_title='키워드',
-                        yaxis_title='빈도수',
-                        plot_bgcolor='white')
+                        yaxis_title='빈도수')
+        fig.update_layout(
+        margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+        paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+        plot_bgcolor="white",    # 플롯 영역 배경색 설정
+        title_font=dict(color='black'))
         
         with tabs[i]:
             st.plotly_chart(fig)
@@ -509,8 +581,12 @@ def category_posts():
     fig = px.bar(grouped_counts, x=grouped_counts.index, y='post_count',
                 labels={'x': '대분류', 'post_count': '포스트 수'},
                 title='업종별 게시글 수')
-    fig.update_layout(xaxis_title='월', yaxis_title='포스트 수',
-                    plot_bgcolor='white')
+    fig.update_layout(xaxis_title='월', yaxis_title='포스트 수')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
     fig.add_hline(y=grouped_counts['post_count'].mean(), line_dash="dash", line_color="red", annotation_text="평균 게시글 수")
 
@@ -526,8 +602,12 @@ def month_posts():
     fig = px.bar(grouped_counts, x=grouped_counts.index, y='post_count',
                 labels={'x': '월', 'post_count': '포스트 수'},
                 title='월별 게시글 수')
-    fig.update_layout(xaxis_title='월', yaxis_title='포스트 수', xaxis=dict(tickmode='linear', dtick=1),
-                    plot_bgcolor='white')
+    fig.update_layout(xaxis_title='월', yaxis_title='포스트 수', xaxis=dict(tickmode='linear', dtick=1))
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
     fig.add_hline(y=grouped_counts['post_count'].mean(), line_dash="dash", line_color="red", annotation_text="평균 게시글 수")
 
@@ -544,10 +624,15 @@ def month_good():
                 labels={'month': '월', 'post_count': '좋아요 수'},
                 title='월별 좋아요 수')
     fig.update_layout(
-        xaxis_title='월', yaxis_title='좋아요 수', plot_bgcolor='white',
+        xaxis_title='월', yaxis_title='좋아요 수',
         xaxis=dict(tickmode='linear', dtick=1),  # 눈금 간격을 1로 설정하여 모든 레이블 표시
         yaxis=dict(tickmode='linear', dtick=100000),
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
 
     # Streamlit에 그래프 표시
@@ -567,11 +652,15 @@ def month_category_posts():
     fig.update_layout(
         xaxis_title='월',
         yaxis_title='게시글 수',
-        plot_bgcolor='white',
         xaxis=dict(tickmode='linear', dtick=1),
         legend_title='업종',
         barmode='stack'
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # 범례 위치 조정
     fig.update_layout(legend=dict(
@@ -600,12 +689,16 @@ def month_category_good():
     fig.update_layout(
         xaxis_title='월',
         yaxis_title='좋아요 수',
-        plot_bgcolor='white',
         legend_title='업종',
         xaxis=dict(tickmode='linear', dtick=1),
         yaxis=dict(tickmode='linear', dtick=100000),
         legend=dict(orientation='h', yanchor="bottom", y=1.02, xanchor="right", x=1)
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
@@ -627,9 +720,13 @@ def month_category_posts_good():
     fig.update_layout(
         xaxis_title='월',
         yaxis_title='좋아요 비율 (%)',
-        plot_bgcolor='white',
         barmode='stack'
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # 범례 위치 조정
     fig.update_layout(legend=dict(
@@ -674,8 +771,12 @@ def year_keyword():
         # Plotly를 사용한 그래프 그리기
         fig = px.bar(data, x='Keyword', y='Frequency', title=f'{year}년 가장 많이 등장하는 키워드 (상위 10개)',
                      labels={'Frequency': '빈도', 'Keyword': '키워드'})
-        fig.update_layout(xaxis_title='키워드', yaxis_title='빈도', plot_bgcolor='white', xaxis_tickangle=-45)
-        
+        fig.update_layout(xaxis_title='키워드', yaxis_title='빈도', xaxis_tickangle=-45)
+        fig.update_layout(
+        margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+        paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+        plot_bgcolor="white",    # 플롯 영역 배경색 설정
+        title_font=dict(color='black'))
         # 탭에 그래프 추가
         with tab:
             st.plotly_chart(fig)
@@ -686,41 +787,51 @@ def year_good_fig1():
     grouped_good = df.groupby('year').agg(good_sum=('good', 'sum')).reset_index()
 
     # Plotly를 사용한 그래프 그리기
-    fig1 = px.bar(grouped_good, x='year', y='good_sum',
+    fig = px.bar(grouped_good, x='year', y='good_sum',
                 labels={'year': '연도', 'good_sum': '좋아요 합계'},
                 title='연도별 좋아요 합계')
 
     # 그래프 레이아웃 설정
-    fig1.update_layout(
+    fig.update_layout(
         xaxis_title='연도',
         yaxis_title='좋아요 합계',
         plot_bgcolor='white',
         xaxis_tickmode='linear',  # 모든 연도 레이블 표시
         xaxis_dtick=1  # 1년 간격으로 눈금 설정
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     # streamlit 막대그래프 그리기
-    st.plotly_chart(fig1)
+    st.plotly_chart(fig)
 def year_good_fig2():
     # 연도별로 '좋아요' 수 집계
     grouped_good = df.groupby('year').agg(good_sum=('good', 'sum')).reset_index()
 
     # Plotly를 사용한 꺾은선 그래프 그리기
-    fig2 = px.line(grouped_good, x='year', y='good_sum',
+    fig = px.line(grouped_good, x='year', y='good_sum',
                 labels={'year': '연도', 'good_sum': '좋아요 합계'},
                 title='연도별 좋아요 합계',
                 markers=True)  # 점 표시 추가
 
     # 그래프 레이아웃 설정
-    fig2.update_layout(
+    fig.update_layout(
         xaxis_title='연도',
         yaxis_title='좋아요 합계',
         plot_bgcolor='white',
         xaxis_tickmode='linear',  # 모든 연도 레이블 표시
         xaxis_dtick=1  # 1년 간격으로 눈금 설정
     )
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # streamlit 막대그래프 그리기
-    st.plotly_chart(fig2)
+    st.plotly_chart(fig)
 
 # 연도별 대분류별 좋아요 합계
 def year_category_good_fig1():
@@ -745,9 +856,13 @@ def year_category_good_fig1():
         title='꺾은선 그래프',
         xaxis=dict(title='연도'),
         yaxis=dict(title='좋아요 합계'),
-        legend_title="대분류",
-        plot_bgcolor='white'
+        legend_title="대분류"
     )
+    fig1.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # x축 설정: 모든 연도 표시
     fig1.update_xaxes(tickmode='array', tickvals=grouped_good['year'].unique())
@@ -780,6 +895,11 @@ def year_category_good_fig2():
         barmode='stack',  # 스택드 막대 그래프 설정
         plot_bgcolor='white'
     )
+    fig2.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # x축 설정: 연도 별로 정렬
     fig2.update_xaxes(categoryorder='array', categoryarray=sorted(grouped_good['year'].unique()))
@@ -805,6 +925,11 @@ def year_category_post_fig1():
         barmode='group',
         legend_title="대분류"
     )
+    fig1.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     return st.plotly_chart(fig1)
 def year_category_post_fig2():
     grouped_post_count = df.groupby(['year', '대분류']).agg(post_count=('post', 'count')).reset_index()
@@ -822,6 +947,11 @@ def year_category_post_fig2():
         yaxis_title='게시물 수',
         legend_title="대분류"
     )
+    fig2.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     return st.plotly_chart(fig2)
 
 # 이모티콘 수와 좋아요 수의 관계
@@ -842,6 +972,11 @@ def emoji_good():
 
     # 그래프 레이아웃 설정
     fig.update_layout(xaxis_title='Emoji 개수', yaxis_title='Good')
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
@@ -861,7 +996,11 @@ def lenpost_good():
 
     # 그래프 레이아웃 설정
     fig.update_layout(xaxis_title='게시글 길이', yaxis_title='좋아요')
-
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     # Streamlit에 그래프 표시
     st.plotly_chart(fig)
 
@@ -885,7 +1024,11 @@ def lenID_follower():
 
     # 그래프 레이아웃 설정
     fig.update_layout(xaxis_title='아이디 길이', yaxis_title='팔로워')
-
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
 
@@ -904,7 +1047,11 @@ def follower_good():
 
     # 그래프 레이아웃 설정
     fig.update_layout(xaxis_title='팔로워 수', yaxis_title='좋아요 수')
-
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
 
@@ -923,6 +1070,10 @@ def follower_post():
 
     # 그래프 레이아웃 설정
     fig.update_layout(xaxis_title='팔로워 수', yaxis_title='게시글 수')
-
+    fig.update_layout(
+    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+    plot_bgcolor="white",    # 플롯 영역 배경색 설정
+    title_font=dict(color='black'))
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig)
