@@ -23,6 +23,8 @@ from main import year_good_fig1
 from main import year_good_fig2
 from main import year_category_good_fig1
 from main import year_category_good_fig2
+from main import year_category_post_fig1
+from main import year_category_post_fig2
 from main import emoji_good
 from main import lenpost_good
 from main import lenID_follower
@@ -110,113 +112,118 @@ with st.expander("📑⛏️ 우리가 찾은 데이터 📑⛏️"):
 # with col2: 
 #     ID_posts()
 # -----------------------------
-# 업종별
-st.subheader("업종별")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("인사이트")
-    st.markdown("- 관광지가 올리는 것 대비 좋아요수가 잘 찍힌다.")
-with col2:
-    tab1, tab2, tab3, tab4 = st.tabs(["데이터 개수", "총 좋아요 수", "각 카테고리별 데이터수, 좋아요수 계산","데이터수 대비 좋아요 수 비율"])
-    with tab1:
-        category_counts()
-    with tab2:
-        category_likes()
-    with tab3:
-        category_counts_likes()
-    with tab4:
-        category_counts_likes_divide()
-
-st.markdown('---')
-
+# 업종별 데이터수 & 좋아요수
+def gr1():
+    st.subheader("업종별 데이터수 & 좋아요수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("인사이트")
+        st.markdown("- 관광지가 올리는 것 대비 좋아요수가 잘 찍힌다.")
+    with col2:
+        tab1, tab2, tab3, tab4 = st.tabs(["✅데이터수", "✅좋아요수", "✅데이터수 & 좋아요수","✅데이터수대비 좋아요수"])
+        with tab1:
+            category_counts()
+        with tab2:
+            category_likes()
+        with tab3:
+            category_counts_likes()
+        with tab4:
+            category_counts_likes_divide()
 
 # 전체 키워드 빈도수 (상위 20개)
-st.subheader("전체 키워드 빈도수 (상위 20개)")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    keyword_frequency()
+def gr2():
+    st.subheader("전체 키워드 빈도수 (상위 20개)")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+    with col2: 
+        keyword_frequency()
 
 # 업종별 많이 나오는 키워드수
-st.subheader("업종별 많이 나오는 키워드수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    category_keyword()
+def gr3():
+    st.subheader("업종별 많이 나오는 키워드수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+    with col2: 
+        category_keyword()
 
+## 첫 번째거랑 겹쳐서 주석처리함
 # 업종별 게시글수
-st.subheader("업종별 게시글수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    category_posts()
+# st.subheader("업종별 게시글수")
+# col1, col2 = st.columns([1,4])
+# with col1:
+#     st.subheader("d d d d d d d d")
+# with col2: 
+#     category_posts()
 
 # 월별 많이 나오는 키워드수
-st.subheader("월별 많이 나오는 키워드수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("인사이트")
-    st.markdown("- 월 별 특징적으로 나와 있는 것은?"
-                "- 제주, 맛집, 카페는 전체적으로 있다. = 계절의 영향을 덜 받는다."
-                "- 9월 10월에 서귀포가 없다."
-                "- 12월은 크리스마스가 있다."
-                "- 6월에 특징적으로 키워드 수가 적어졌다.=월 별 게시글 수가 줄어든 것과 연관이 있을 수 있다.")
-with col2: 
-    month_keyword()
+def gr4():
+    st.subheader("월별 많이 나오는 키워드수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("인사이트")
+        st.markdown("- 월 별 특징적으로 나와 있는 것은?"
+                    "- 제주, 맛집, 카페는 전체적으로 있다. = 계절의 영향을 덜 받는다."
+                    "- 9월 10월에 서귀포가 없다."
+                    "- 12월은 크리스마스가 있다."
+                    "- 6월에 특징적으로 키워드 수가 적어졌다.=월 별 게시글 수가 줄어든 것과 연관이 있을 수 있다.")
+    with col2: 
+        month_keyword()
 
 # 월별 게시글수/좋아요수
-st.subheader("월별 게시글수/좋아요수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-    st.markdown("- 알 수 있는 점"
-    "- 6월이 게시글 수가 적다."
-    "- 11 ~ 1월이 게시글 수가 많다.")
-with col2: 
-    tab1, tab2 = st.tabs(["월별 게시글 수", "월별 좋아요 수"])
-    with tab1:
-        month_posts()
-    with tab2:
-        month_good()
+def gr5():
+    st.subheader("월별 게시글수/좋아요수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+        st.markdown("- 알 수 있는 점"
+        "- 6월이 게시글 수가 적다."
+        "- 11 ~ 1월이 게시글 수가 많다.")
+    with col2: 
+        tab1, tab2 = st.tabs(["✅월별 게시글 수", "✅월별 좋아요 수"])
+        with tab1:
+            month_posts()
+        with tab2:
+            month_good()
 
 # 월별 대분류별 게시글수/좋아요수/게시글당평균좋아요비율
-st.subheader("월별 대분류별 게시글수/좋아요수/비율")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-    st.markdown("- 겨울에 식당이 많이 늘어난다???"
-"- 게시글 수만큼 좋아요수도 늘어나는 경향이 있다(4월, 7월 제외)")
-with col2: 
-    tab1, tab2, tab3 = st.tabs(["월별 대분류별 게시글 수", "월별 대분류별 좋아요 수", "월별 대분류별 게시글당 평균 좋아요 비율"])
-    with tab1:
-        month_category_posts()
-    with tab2:
-        month_category_good()
-    with tab3:
-        month_category_posts_good()
+def gr6():
+    st.subheader("월별 대분류별 게시글수/좋아요수/비율")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+        st.markdown("- 겨울에 식당이 많이 늘어난다???"
+    "- 게시글 수만큼 좋아요수도 늘어나는 경향이 있다(4월, 7월 제외)")
+    with col2: 
+        tab1, tab2, tab3 = st.tabs(["✅월별 대분류별 게시글 수", "✅월별 대분류별 좋아요 수", "✅월별 대분류별 게시글당 평균 좋아요 비율"])
+        with tab1:
+            month_category_posts()
+        with tab2:
+            month_category_good()
+        with tab3:
+            month_category_posts_good()
 
 # 연도별 많이 나오는 키워드 수
-st.subheader("연도별 많이 나오는 키워드 수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-    st.markdown("- 20년도에 포토존, 감성, 분위기 등의 키워드가 특징적으로 나타난다."
-"- 20년도에 '인생샷'이라는 키워드가 높았는데, 21년도부터는 볼 수 없다. (코로나 떄문일까요? 마스크, 비대면, 여행감소)"
-"- 비대면이라 사진의 중요성이 높아졌다?"
-"- 인생네컷 : 2017년에 출시, 2020년 이후부터 사람들에게 지칭됨(이 영향이 있지 않을까?)"
-"- 인생~~시리즈 유행해서 그러지 않았을까?"
-"- 24년도에 이벤트가 생겼다(리뷰이벤트?)"
-"- 연도별 게시글 수가 늘어나고 있다고 추측한다. (홍보성 게시글이 많아지고 있다.))")
-with col2: 
-    year_keyword()
+def gr7():
+    st.subheader("연도별 많이 나오는 키워드 수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+        st.markdown("- 20년도에 포토존, 감성, 분위기 등의 키워드가 특징적으로 나타난다."
+    "- 20년도에 '인생샷'이라는 키워드가 높았는데, 21년도부터는 볼 수 없다. (코로나 떄문일까요? 마스크, 비대면, 여행감소)"
+    "- 비대면이라 사진의 중요성이 높아졌다?"
+    "- 인생네컷 : 2017년에 출시, 2020년 이후부터 사람들에게 지칭됨(이 영향이 있지 않을까?)"
+    "- 인생~~시리즈 유행해서 그러지 않았을까?"
+    "- 24년도에 이벤트가 생겼다(리뷰이벤트?)"
+    "- 연도별 게시글 수가 늘어나고 있다고 추측한다. (홍보성 게시글이 많아지고 있다.))")
+    with col2: 
+        year_keyword()
 
 ### 겹쳐서 주석처리함
 # 연도별 좋아요 수
 # st.subheader("연도별 좋아요 수")
-# col1, col2 = st.columns([1,4])
+# col1, col2 = st.columns([1,3])
 # with col1:
 #     st.subheader("d d d d d d d d")
 #     st.markdown(""- 23년도부터 관광지의 연도별 좋아요 수가 식당의 좋아요 수보다 많아졌다")
@@ -228,24 +235,25 @@ with col2:
 #         year_good_fig2()
 
 # 연도별 대분류별 좋아요 합계
-st.subheader("연도별 대분류별 좋아요 합계/게시물 수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2, tab3, tab4 = st.tabs(["좋아요-막대", "좋아요-꺾은선", "게시물수-막대", "게시물수-꺾은선"])
-    with tab1:
-        # 연도별 대분류별 좋아요 합계- 막대
-        year_category_good_fig2()
-    with tab2:
-        # 연도별 대분류별 좋아요 합계- 꺾은선
-        year_category_good_fig1()
-    with tab3:
-        # 연도별 대분류별 게시물수- 막대
-        year_category_good_fig2()
-    with tab4:
-        # 연도별 대분류별 게시물수- 꺾은선
-        year_category_good_fig1()
+def gr8():
+    st.subheader("연도별 대분류별 좋아요 합계/게시물 수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+    with col2: 
+        tab1, tab2, tab3, tab4 = st.tabs(["✅좋아요-막대", "✅좋아요-꺾은선", "✅게시물수-막대", "✅게시물수-꺾은선"])
+        with tab1:
+            # 연도별 대분류별 좋아요 합계- 막대
+            year_category_good_fig2()
+        with tab2:
+            # 연도별 대분류별 좋아요 합계- 꺾은선
+            year_category_good_fig1()
+        with tab3:
+            # 연도별 대분류별 게시물수- 막대
+            year_category_post_fig1()
+        with tab4:
+            # 연도별 대분류별 게시물수- 꺾은선
+            year_category_post_fig2()
 
 # 업종과 빈도의 연관성
 # st.subheader("업종과 빈도의 연관성")
@@ -274,36 +282,38 @@ with col2:
 # def year_posts():
 
 # 좋아요 수에 영향을 미치는 요인: follower수, 게시글길이, 이모티콘수
-st.subheader("좋아요 수에 영향을 미치는 요인: follower수, 게시글길이, 이모티콘수")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2, tab3 = st.tabs(["follower수", "게시글 길이", "이모티콘 수"])
-    with tab1:
-        # follower와 좋아요 수의 관계
-        follower_good()
-    with tab2:
-        # 게시글 길이와 좋아요 수의 관계
-        lenpost_good()
-    with tab3:
-        # 이모티콘 수와 좋아요 수의 관계
-        emoji_good()
+def gr9():
+    st.subheader("좋아요수에 영향을 미치는 요인: 팔로워수, 게시글길이, 이모티콘수")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+    with col2: 
+        tab1, tab2, tab3 = st.tabs(["✅팔로워수", "✅게시글 길이", "✅이모티콘수"])
+        with tab1:
+            # follower와 좋아요 수의 관계
+            follower_good()
+        with tab2:
+            # 게시글 길이와 좋아요 수의 관계
+            lenpost_good()
+        with tab3:
+            # 이모티콘 수와 좋아요 수의 관계
+            emoji_good()
         
 
 # follower 수에 영향을 미치는 요인: 게시글 수, 아이디 길이
-st.subheader("follower 수에 영향을 미치는 요인: 게시글 수, 아이디 길이")
-col1, col2 = st.columns([1,4])
-with col1:
-    st.subheader("d d d d d d d d")
-with col2: 
-    tab1, tab2= st.tabs(["게시글 수","ID의 길이"])
-    with tab1:
-        # follower와 게시글 수의 관계
-        follower_post()
-    with tab2:
-        # follower와 ID 길이의 관계
-        lenID_follower()
+def gr10():
+    st.subheader("팔로워수에 영향을 미치는 요인: 게시글수, ID 길이")
+    col1, col2 = st.columns([1,3])
+    with col1:
+        st.subheader("d d d d d d d d")
+    with col2: 
+        tab1, tab2= st.tabs(["✅게시글 수","✅ID 길이"])
+        with tab1:
+            # follower와 게시글 수의 관계
+            follower_post()
+        with tab2:
+            # follower와 ID 길이의 관계
+            lenID_follower()
 
 
 
@@ -316,26 +326,36 @@ image = Image.open('그림3.png')
 # Streamlit 앱에 이미지 표시
 st.sidebar.image(image, width=300)
 
-st.sidebar.header("항목을 선택하세요:")
+st.sidebar.header("그래프를 선택하세요:")
 
-year = st.sidebar.multiselect(
-    "Select Year",
-    options = df["year"].unique(),
-    default = df["year"].unique()
-)
-
-month = st.sidebar.multiselect(
-    "Select Month",
-    options = df["month"].unique(),
-    default = df["month"].unique()
-)
-
-대분류 = st.sidebar.multiselect(
-    "Select 업종(대분류)",
-    options = df["대분류"].unique(),
-    default = df["대분류"].unique()
-)
-
-df_selection = df.query(
-    "year == @year & month == @month & 대분류 == @대분류"
-)
+status = st.sidebar.radio('graph', [
+                                    '업종별 데이터수 & 좋아요수',
+                                    '전체 키워드 빈도수(상위20개)',
+                                    '업종별 많이 나오는 키워드수',
+                                    '월별 많이 나오는 키워드수',
+                                    '월별 게시글수/좋아요수',
+                                    '월별 대분류별 게시글수/좋아요수/비율',
+                                    '연도별 많이 나오는 키워드수',
+                                    '연도별 대분류별 좋아요 합계/게시물수',
+                                    '좋아요수에 영향을 미치는 요인',
+                                    '팔로워수에 영향을 미치는 요인'])
+if status == '업종별 데이터수 & 좋아요수' :
+    gr1()
+elif status == '전체 키워드 빈도수(상위20개)' :
+    gr2()
+elif status == '업종별 많이 나오는 키워드수' :
+    gr3()
+elif status == '월별 많이 나오는 키워드수' :
+    gr4()
+elif status == '월별 게시글수/좋아요수' :
+    gr5()
+elif status == '월별 대분류별 게시글수/좋아요수/비율' :
+    gr6()
+elif status == '연도별 많이 나오는 키워드수' :
+    gr7()
+elif status == '연도별 대분류별 좋아요 합계/게시물수' :
+    gr8()
+elif status == '좋아요수에 영향을 미치는 요인' :
+    gr9()
+elif status == '팔로워수에 영향을 미치는 요인' :
+    gr10()
