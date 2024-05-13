@@ -5,6 +5,20 @@ import plotly.graph_objects as go # pip install plotly
 from collections import Counter
 import emoji # pip install emoji
 from PIL import Image
+from app import month_category_posts
+from app import category_likes
+from app import category_counts
+from app import category_counts_likes
+from app import category_counts_likes_divide
+from app import day_category_posts
+from app import category_posts_day
+from app import category_posts_month
+from app import month_category_good
+from app import month_keyword
+from app import keyword_good
+from app import ID_month_good
+from app import ID_posts
+from app import keyword_frequency
 
 st.set_page_config(page_title="🖼️4조의 시각화🖼️", layout='wide')
 
@@ -20,182 +34,104 @@ with st.expander("데이터 보기"):
 
 # 연-월별 대분류별 게시글수
 st.subheader("연-월별 대분류별 게시글수")
-def month_category_posts():
-    df = pd.read_excel('240512_df.xlsx',parse_dates=['date'])
-    df['date'] = pd.to_datetime(df['date'])  # 'date' 열을 datetime 형식으로 변환
-    df['year_month'] = df['date'].dt.to_period('M')
-
-    # 연도와 월로 그룹화하여 게시글 수 요약
-    df_year_month = df.groupby(['year_month', '대분류']).size().reset_index(name='게시글')
-
-    # Pandas Period를 문자열로 변환
-    df_year_month['year_month'] = df_year_month['year_month'].dt.strftime('%Y-%m')
-
-    # pivot을 사용하여 데이터 재구성
-    df_pivot = df_year_month.pivot(index='year_month', columns='대분류', values='게시글')
-
-    # Plotly를 사용하여 선 그래프 생성
-    fig = px.line(df_pivot, x=df_pivot.index, y=df_pivot.columns,
-                labels={'value': '게시글 수', 'year_month': '날짜', 'variable': '대분류'},
-                markers=True, title='연-월별 대분류별 게시글 수')
-
-    # streamlit에 그래프 표시
-    return st.plotly_chart(fig, use_container_width=True)
-
 col1, col2 = st.columns([1,4])
 with col1:
-    st.subheader("lorem lorem lorem lorem lorem lorem lorem lorem lorem")
+    st.subheader("d d d d d d d d")
 with col2: 
     month_category_posts()
 
+# 날짜별 대분류별 게시글수
+st.subheader("날짜별 대분류별 게시글수")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    day_category_posts()
+
+# 년도별 대분류별 게시글수
+st.subheader("년도별 대분류별 게시글수")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    category_posts_day()
+
+# 년도별 대분류별 게시글수- 월단위
+st.subheader("년도별 대분류별 게시글수- 월단위")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    category_posts_month()
+
+# 연-월별 대분류별 좋아요 수
+st.subheader("연-월별 대분류별 좋아요 수")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    month_category_good()
+
+# 연-월별 많이 나오는 키워드
+st.subheader("연-월별 많이 나오는 키워드")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    month_keyword()
+
+# 많이 등장하는 키워드와 좋아요의 관계
+st.subheader("많이 등장하는 키워드와 좋아요의 관계")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    keyword_good()
+
+# 계정 ID별 월별 좋아요 수
+st.subheader("계정 ID별 월별 좋아요 수")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    ID_month_good()
+
+# 월별 ID별 게시글 수 
+st.subheader("월별 ID별 게시글 수 ")
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    ID_posts()
+
+# -----------------------------
+
+# 카테고리별
 st.subheader("카테고리별")
-tab1, tab2, tab3, tab4 = st.tabs(["데이터 개수", "총 좋아요 수", "각 카테고리별 데이터수, 좋아요수 계산","데이터수 대비 좋아요 수 비율"])
-
-# 각 카테고리별 데이터 개수 계산
-def category_counts():
-    category_counts = df['대분류'].value_counts().reset_index()
-    category_counts.columns = ['대분류', 'count']
-
-    # 데이터 개수 시각화
-    fig = px.bar(category_counts, x='대분류', y='count', title='카테고리별 데이터 개수',
-                labels={'count': '데이터 개수', '대분류': '카테고리'}, color='count')
-    
-    fig.update_layout(
-    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
-    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
-    plot_bgcolor="white",    # 플롯 영역 배경색 설정
-    title_font=dict(color='black'),    
-)
-
-    # Streamlit에 피규어 표시
-    return fig
-# 각 카테고리별 총 좋아요 수 계산
-def category_likes():
-    category_likes = df.groupby('대분류')['good'].sum().reset_index()
-
-    # 좋아요 수 시각화
-    fig = px.bar(category_likes, x='대분류', y='good', title='카테고리별 총 좋아요 수',
-                labels={'good': '총 좋아요 수', '대분류': '카테고리'}, color='good')
-
-    # Streamlit에 피규어 표시
-    return fig
-# 각 카테고리별 데이터수, 좋아요수 계산
-def category_counts_likes():
-    # 각 카테고리별 데이터 개수 계산
-    category_counts = df['대분류'].value_counts()
-    category_counts.sort_index(ascending=False, inplace=True)
-
-    # 각 카테고리별 총 좋아요 수 계산
-    category_likes = df.groupby('대분류')['good'].sum()
-    category_likes.sort_index(ascending=False, inplace=True)
-
-    # Plotly 그래프 생성
-    fig = go.Figure()
-
-    # 카테고리별 데이터 개수를 막대 그래프로 추가
-    fig.add_trace(go.Bar(
-        x=category_counts.index,
-        y=category_counts,
-        name='데이터 개수',
-        marker_color='skyblue'
-    ))
-
-    # 좋아요 수를 꺾은선 그래프로 추가
-    fig.add_trace(go.Scatter(
-        x=category_likes.index,
-        y=category_likes,
-        name='총 좋아요 수',
-        mode='lines+markers',
-        marker_color='salmon',
-        yaxis='y2'
-    ))
-
-    # 레이아웃 설정
-    fig.update_layout(
-        title='카테고리별 데이터 개수 및 좋아요 수',
-        xaxis_title='카테고리',
-        yaxis_title='데이터 개수',
-        legend_title='범례',
-        plot_bgcolor='white'
-    )
-
-    # 두 번째 y축 추가 설정
-    fig.update_layout(
-        yaxis2=dict(
-            title='총 좋아요 수',
-            overlaying='y',
-            side='right'
-        )
-    )
-
-    # Streamlit에서 표시
-    st.plotly_chart(fig)
-# 데이터수 대비 좋아요 수 비율
-def category_counts_likes_divide():
-    # 각 카테고리별 데이터 개수 계산
-    category_counts = df['대분류'].value_counts()
-
-    # 각 카테고리별 총 좋아요 수 계산
-    category_likes = df.groupby('대분류')['good'].sum()
-
-    # 각 카테고리별 좋아요 수의 평균 계산
-    category_like_ratio = category_likes / category_counts
-
-    # 좋아요 수 비율을 데이터 프레임으로 변환
-    category_like_ratio_df = category_like_ratio.reset_index()
-    category_like_ratio_df.columns = ['대분류', '좋아요 수 비율']
-
-    # 데이터 시각화
-    fig = px.bar(category_like_ratio_df, x='대분류', y='좋아요 수 비율', title='카테고리별 데이터수 대비 좋아요 수 비율',
-                labels={'좋아요 수 비율': '좋아요 수 비율', '대분류': '카테고리'}, color='좋아요 수 비율')
-
-    # 그래프 설정
-    fig.update_layout(xaxis_title='카테고리', yaxis_title='좋아요 수 비율',
-                    plot_bgcolor='white', xaxis={'categoryorder':'total descending'})
-
-    # Streamlit에 피규어 표시
-    return st.plotly_chart(fig)
-
-with tab1:
-    st.plotly_chart(category_counts())
-with tab2:
-    st.plotly_chart(category_likes())
-with tab3:
-    category_counts_likes()
-with tab4:
-    category_counts_likes_divide()
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2:
+    tab1, tab2, tab3, tab4 = st.tabs(["데이터 개수", "총 좋아요 수", "각 카테고리별 데이터수, 좋아요수 계산","데이터수 대비 좋아요 수 비율"])
+    with tab1:
+        category_counts()
+    with tab2:
+        category_likes()
+    with tab3:
+        category_counts_likes()
+    with tab4:
+        category_counts_likes_divide()
 
 st.markdown('---')
 
 
 # 전체 키워드 빈도수 (상위 20개)
 st.subheader("전체 키워드 빈도수 (상위 20개)")
-def keyword_frequency():
-    # 빈 Counter 객체 생성
-    keyword_counter = Counter()
-
-    # '키워드2' 열의 값을 합치기
-    merged_keywords = ' '.join([keyword.strip("'[],") for keyword in df['키워드2']])
-
-    # 토큰화하여 Counter 객체 업데이트
-    tokens = merged_keywords.split()  # 키워드를 공백을 기준으로 분리하여 토큰화
-    keyword_counter.update(tokens)  # Counter 객체 업데이트
-
-    # 가장 많이 등장하는 상위 20개 키워드 추출
-    top_20_keywords = keyword_counter.most_common(20)
-
-    # DataFrame으로 변환
-    keywords_df = pd.DataFrame(top_20_keywords, columns=['Keyword', 'Frequency'])
-
-    # 데이터 시각화
-    fig = px.bar(keywords_df, x='Keyword', y='Frequency', title='전체 키워드 빈도수 (상위 20개)',
-                labels={'Frequency': '빈도', 'Keyword': '키워드'})
-    fig.update_traces(texttemplate='%{y}', textposition='outside')  # 막대 위에 빈도 수 표시
-    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickangle=-45)  # 텍스트 크기 조정 및 x축 라벨 회전
-
-    # Streamlit에 피규어 표시
-    return st.plotly_chart(fig)
-keyword_frequency()
+col1, col2 = st.columns([1,4])
+with col1:
+    st.subheader("d d d d d d d d")
+with col2: 
+    keyword_frequency()
 
 # 업종별 많이 나오는 키워드수
 st.subheader("업종별 많이 나오는 키워드수")
