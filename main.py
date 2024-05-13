@@ -364,13 +364,14 @@ def category_counts():
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig, use_container_width=True)
 
-# 각 카테고리별 총 좋아요 수 계산
+# 각 카테고리별 좋아요 수 계산
 def category_likes():
     category_likes = df.groupby('대분류')['good'].sum().reset_index()
 
     # 좋아요 수 시각화
-    fig = px.bar(category_likes, x='대분류', y='good', title='업종별 총 좋아요 수',
-                labels={'good': '총 좋아요 수', '대분류': '업종'}, color='good')
+    fig = px.bar(category_likes, x='대분류', y='good', title='업종별 좋아요 수',
+                labels={'good': '좋아요 수', '대분류': '업종'}, color='good',
+                category_orders={'대분류': ['식당', '관광지', '카페', '쇼핑', '숙소', '반려동물', '미분류']})
     
     fig.update_layout(
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
@@ -383,13 +384,14 @@ def category_likes():
 
 # 각 카테고리별 데이터수, 좋아요수 계산
 def category_counts_likes():
+    # 원하는 순서 지정
+    order = ['식당', '관광지', '카페', '쇼핑', '숙소', '반려동물', '미분류']
+    
     # 각 카테고리별 데이터 개수 계산
-    category_counts = df['대분류'].value_counts()
-    category_counts.sort_index(ascending=False, inplace=True)
-
+    category_counts = df['대분류'].value_counts().reindex(order)
+    
     # 각 카테고리별 총 좋아요 수 계산
-    category_likes = df.groupby('대분류')['good'].sum()
-    category_likes.sort_index(ascending=False, inplace=True)
+    category_likes = df.groupby('대분류')['good'].sum().reindex(order)
 
     # Plotly 그래프 생성
     fig = go.Figure()
@@ -413,22 +415,20 @@ def category_counts_likes():
     ))
 
     # 레이아웃 설정
-    fig.update_layout(title='업종별 데이터 개수 및 좋아요 수',xaxis_title='업종',yaxis_title='데이터 개수',
-        legend_title='범례')
-    fig.update_layout(
-    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
-    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
-    plot_bgcolor="white",    # 플롯 영역 배경색 설정
-    title_font=dict(color='black'))
+    fig.update_layout(title='업종별 데이터 개수 및 좋아요 수', xaxis_title='업종', yaxis_title='데이터 개수',
+                      legend_title='범례', margin=dict(l=60, r=40, t=60, b=40),
+                      paper_bgcolor="#ECF8E0", plot_bgcolor="white", title_font=dict(color='black'))
 
     # 두 번째 y축 추가 설정
-    fig.update_layout(yaxis2=dict(title='총 좋아요 수',overlaying='y',side='right'))
+    fig.update_layout(yaxis2=dict(title='총 좋아요 수', overlaying='y', side='right'))
 
     # Streamlit에서 표시
-    st.plotly_chart(fig, use_container_width=True)
+    return st.plotly_chart(fig, use_container_width=True)
 
-# 데이터수 대비 좋아요 수 비율
+# 게시물수 대비 좋아요 수 비율
 def category_counts_likes_divide():
+    order = ['식당', '관광지', '카페', '쇼핑', '숙소', '반려동물', '미분류']
+    
     # 각 카테고리별 데이터 개수 계산
     category_counts = df['대분류'].value_counts()
 
@@ -438,22 +438,21 @@ def category_counts_likes_divide():
     # 각 카테고리별 좋아요 수의 평균 계산
     category_like_ratio = category_likes / category_counts
 
-    # 좋아요 수 비율을 데이터 프레임으로 변환
-    category_like_ratio_df = category_like_ratio.reset_index()
+    # 좋아요 수 비율을 데이터 프레임으로 변환 및 순서 정렬
+    category_like_ratio_df = category_like_ratio.reindex(order).reset_index()
     category_like_ratio_df.columns = ['대분류', '좋아요 수 비율']
 
     # 데이터 시각화
     fig = px.bar(category_like_ratio_df, x='대분류', y='좋아요 수 비율', title='업종별 데이터수 대비 좋아요 수 비율',
-                labels={'좋아요 수 비율': '좋아요 수 비율', '대분류': '업종'}, color='좋아요 수 비율')
+                 labels={'좋아요 수 비율': '좋아요 수 비율', '대분류': '업종'}, color='좋아요 수 비율',
+                 category_orders={'대분류': order})  # 순서 지정
 
     # 그래프 설정
     fig.update_layout(xaxis_title='업종', yaxis_title='좋아요 수 비율',
-                     xaxis={'categoryorder':'total descending'})
-    fig.update_layout(
-    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
-    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
-    plot_bgcolor="white",    # 플롯 영역 배경색 설정
-    title_font=dict(color='black'))
+                      margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+                      paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+                      plot_bgcolor="white",    # 플롯 영역 배경색 설정
+                      title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
     return st.plotly_chart(fig, use_container_width=True)
@@ -510,7 +509,7 @@ def category_keyword():
         keyword_counters_by_industry[industry] = keyword_counter
     
     # Streamlit 탭 생성
-    tabs = st.tabs([f"{industry}" for industry in keyword_counters_by_industry.keys()])
+    tabs = st.tabs([f"✅{industry}" for industry in keyword_counters_by_industry.keys()])
 
     # 각 탭에 대해 그래프 생성 및 표시
     for i, (industry, keyword_counter) in enumerate(keyword_counters_by_industry.items()):
@@ -518,7 +517,7 @@ def category_keyword():
         keywords, frequencies = zip(*top_keywords)
         
         fig = go.Figure(go.Bar(x=keywords, y=frequencies, marker_color='blue'))
-        fig.update_layout(title=f'{industry} - 상위 10개 키워드 빈도수',
+        fig.update_layout(title=f'상위 10개 키워드 빈도수- {industry}',
                         xaxis_title='키워드',
                         yaxis_title='빈도수')
         fig.update_layout(
@@ -551,7 +550,7 @@ def month_keyword():
         keyword_counters_by_month[month] = keyword_counter
 
     # Streamlit 탭 생성
-    tabs = st.tabs([f"{month}월" for month in sorted(keyword_counters_by_month.keys())])
+    tabs = st.tabs([f"✅{month}월" for month in sorted(keyword_counters_by_month.keys())])
 
     # 각 탭에 대해 그래프 생성 및 표시
     for i, (month, keyword_counter) in enumerate(sorted(keyword_counters_by_month.items())):
@@ -663,14 +662,7 @@ def month_category_posts():
     title_font=dict(color='black'))
 
     # 범례 위치 조정
-    fig.update_layout(legend=dict(
-        title='업종',
-        orientation='h',
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ))
+    fig.update_layout(legend=dict(orientation='v', yanchor="top", y=1.02, xanchor="left", x=8))
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig, use_container_width=True)
@@ -692,7 +684,7 @@ def month_category_good():
         legend_title='업종',
         xaxis=dict(tickmode='linear', dtick=1),
         yaxis=dict(tickmode='linear', dtick=100000),
-        legend=dict(orientation='h', yanchor="bottom", y=1.02, xanchor="right", x=1)
+        legend=dict(orientation='v', yanchor="top", y=1.02, xanchor="left", x=8)
     )
     fig.update_layout(
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
@@ -713,14 +705,15 @@ def month_category_posts_good():
 
     # Plotly를 사용한 그래프 그리기
     fig = px.bar(grouped, x='month', y='average_like_ratio', color='대분류',
-                labels={'month': '월', 'average_like_ratio': '좋아요 비율 (%)', '대분류': '업종'},
-                title='월별 대분류별 게시글당 평균 좋아요 비율')
+                labels={'month': '월', 'average_like_ratio': '좋아요 수', '대분류': '업종'},
+                title='월별 대분류별 게시글당 평균 좋아요수')
 
     # 그래프 레이아웃 설정
     fig.update_layout(
         xaxis_title='월',
-        yaxis_title='좋아요 비율 (%)',
-        barmode='stack'
+        yaxis_title='좋아요수',
+        barmode='stack',
+        xaxis=dict(tickmode='linear', dtick=1)
     )
     fig.update_layout(
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
@@ -729,14 +722,7 @@ def month_category_posts_good():
     title_font=dict(color='black'))
 
     # 범례 위치 조정
-    fig.update_layout(legend=dict(
-        title='업종',
-        orientation='h',
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ))
+    fig.update_layout(legend=dict(orientation='v', yanchor="top", y=1.02, xanchor="left", x=8))
 
     # Streamlit에 그래프 표시
     return st.plotly_chart(fig, use_container_width=True)
@@ -853,7 +839,7 @@ def year_category_good_fig1():
 
     # 그래프 레이아웃 설정
     fig1.update_layout(
-        title='꺾은선 그래프',
+        title='연도별 대분류별 좋아요수 꺾은선 그래프',
         xaxis=dict(title='연도'),
         yaxis=dict(title='좋아요 합계'),
         legend_title="대분류"
@@ -888,7 +874,7 @@ def year_category_good_fig2():
 
     # 그래프 레이아웃 설정
     fig2.update_layout(
-        title='막대그래프',
+        title='연도별 대분류별 좋아요수 막대그래프',
         xaxis=dict(title='연도', type='category'),
         yaxis=dict(title='좋아요 합계'),
         legend_title="대분류",
@@ -920,17 +906,19 @@ def year_category_post_fig1():
             opacity=0.7
         ))
     fig1.update_layout(
+        title='연도별 대분류별 게시물수 막대그래프',
         xaxis_title='연도',
         yaxis_title='게시물 수',
         barmode='group',
         legend_title="대분류"
     )
     fig1.update_layout(
-    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
-    paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
-    plot_bgcolor="white",    # 플롯 영역 배경색 설정
-    title_font=dict(color='black'))
-    return st.plotly_chart(fig1)
+        margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+        paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
+        plot_bgcolor="white",    # 플롯 영역 배경색 설정
+        title_font=dict(color='black')
+    )
+    return st.plotly_chart(fig1, use_container_width=True)
 def year_category_post_fig2():
     grouped_post_count = df.groupby(['year', '대분류']).agg(post_count=('post', 'count')).reset_index()
     fig2 = go.Figure()
@@ -943,6 +931,7 @@ def year_category_post_fig2():
             name=category
         ))
     fig2.update_layout(
+        title='연도별 대분류별 게시물수 꺾은선 그래프',
         xaxis_title='연도',
         yaxis_title='게시물 수',
         legend_title="대분류"
