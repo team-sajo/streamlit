@@ -356,13 +356,13 @@ def category_counts():
                 labels={'count': '데이터 개수', '대분류': '업종'}, color='count')
     
     fig.update_layout(
-    margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
+    margin=dict(l=60, r=40, t=50, b=30),  # 그래프의 마진 조정
     paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 각 카테고리별 총 좋아요 수 계산
 def category_likes():
@@ -379,7 +379,7 @@ def category_likes():
     title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 각 카테고리별 데이터수, 좋아요수 계산
 def category_counts_likes():
@@ -425,7 +425,7 @@ def category_counts_likes():
     fig.update_layout(yaxis2=dict(title='총 좋아요 수',overlaying='y',side='right'))
 
     # Streamlit에서 표시
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 # 데이터수 대비 좋아요 수 비율
 def category_counts_likes_divide():
@@ -456,7 +456,7 @@ def category_counts_likes_divide():
     title_font=dict(color='black'))
 
     # Streamlit에 피규어 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 전체 키워드 빈도수 (상위 20개)
 def keyword_frequency():
@@ -487,7 +487,7 @@ def keyword_frequency():
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
     # Streamlit에 피규어 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 업종별 많이 나오는 키워드수
 def category_keyword():
@@ -528,7 +528,7 @@ def category_keyword():
         title_font=dict(color='black'))
         
         with tabs[i]:
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
 # 월별 많이 나오는 키워드수
 def month_keyword():
@@ -570,7 +570,7 @@ def month_keyword():
         title_font=dict(color='black'))
         
         with tabs[i]:
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
 # 업종별 게시글수
 def category_posts():
@@ -591,7 +591,7 @@ def category_posts():
     fig.add_hline(y=grouped_counts['post_count'].mean(), line_dash="dash", line_color="red", annotation_text="평균 게시글 수")
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 월별 게시글수
 def month_posts():
@@ -612,7 +612,7 @@ def month_posts():
     fig.add_hline(y=grouped_counts['post_count'].mean(), line_dash="dash", line_color="red", annotation_text="평균 게시글 수")
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 월별 좋아요수
 def month_good():
@@ -636,7 +636,7 @@ def month_good():
     fig.update_traces(marker_color='skyblue')  # 막대 색상 설정
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 월별 대분류별 게시글수
 def month_category_posts():
@@ -673,7 +673,7 @@ def month_category_posts():
     ))
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 월별 대분류별 좋아요수
 def month_category_good():
@@ -701,7 +701,7 @@ def month_category_good():
     title_font=dict(color='black'))
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 월별 대분류별 게시글당 평균 좋아요 비율
 def month_category_posts_good():
@@ -739,7 +739,7 @@ def month_category_posts_good():
     ))
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 연도별 많이 나오는 키워드수
 def year_keyword():
@@ -779,7 +779,7 @@ def year_keyword():
         title_font=dict(color='black'))
         # 탭에 그래프 추가
         with tab:
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width=True)
 
 # 연도별 좋아요수
 def year_good_fig1():
@@ -805,7 +805,7 @@ def year_good_fig1():
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
     # streamlit 막대그래프 그리기
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 def year_good_fig2():
     # 연도별로 '좋아요' 수 집계
     grouped_good = df.groupby('year').agg(good_sum=('good', 'sum')).reset_index()
@@ -831,7 +831,7 @@ def year_good_fig2():
     title_font=dict(color='black'))
 
     # streamlit 막대그래프 그리기
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 # 연도별 대분류별 좋아요 합계
 def year_category_good_fig1():
@@ -868,7 +868,7 @@ def year_category_good_fig1():
     fig1.update_xaxes(tickmode='array', tickvals=grouped_good['year'].unique())
 
     # Streamlit에 그래프 표시
-    st.plotly_chart(fig1)
+    st.plotly_chart(fig1, use_container_width=True)
 def year_category_good_fig2():
     # 연도와 대분류별 'good' 열의 합을 계산한 데이터프레임 생성
     grouped_good = df.groupby(['year', '대분류']).agg(good_sum=('good', 'sum')).reset_index()
@@ -905,7 +905,7 @@ def year_category_good_fig2():
     fig2.update_xaxes(categoryorder='array', categoryarray=sorted(grouped_good['year'].unique()))
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig2)
+    return st.plotly_chart(fig2, use_container_width=True)
 
 # 연도별 대분류별 게시물수
 def year_category_post_fig1():
@@ -952,7 +952,7 @@ def year_category_post_fig2():
     paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
-    return st.plotly_chart(fig2)
+    return st.plotly_chart(fig2, use_container_width=True)
 
 # 이모티콘 수와 좋아요 수의 관계
 def emoji_good():
@@ -979,7 +979,7 @@ def emoji_good():
     title_font=dict(color='black'))
 
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # 게시글 길이와 좋아요 수의 관계
 def lenpost_good():
@@ -1002,7 +1002,7 @@ def lenpost_good():
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
     # Streamlit에 그래프 표시
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 # 아이디 길이와 follower의 관계
 def lenID_follower():
@@ -1030,7 +1030,7 @@ def lenID_follower():
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # follower와 좋아요 수의 관계
 def follower_good():
@@ -1053,7 +1053,7 @@ def follower_good():
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
 
 # follower와 게시글 수의 관계
 def follower_post():
@@ -1076,4 +1076,4 @@ def follower_post():
     plot_bgcolor="white",    # 플롯 영역 배경색 설정
     title_font=dict(color='black'))
     # Streamlit에 그래프 표시
-    return st.plotly_chart(fig)
+    return st.plotly_chart(fig, use_container_width=True)
