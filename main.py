@@ -17,6 +17,7 @@ with st.expander("데이터 보기"):
 #################
 
 # 각 카테고리별 데이터 개수 계산
+st.subheader("각 카테고리별 데이터 개수 계산")
 def category_counts():
     category_counts = df['대분류'].value_counts().reset_index()
     category_counts.columns = ['대분류', 'count']
@@ -30,6 +31,7 @@ def category_counts():
 category_counts()
 
 # 각 카테고리별 총 좋아요 수 계산
+st.subheader("각 카테고리별 총 좋아요 수 계산")
 def category_likes():
     category_likes = df.groupby('대분류')['good'].sum().reset_index()
 
@@ -42,6 +44,7 @@ def category_likes():
 category_likes()
 
 # 각 카테고리별 데이터수, 좋아요수 계산
+st.subheader("각 카테고리별 데이터수, 좋아요수 계산")
 def category_counts_likes():
     # 각 카테고리별 데이터 개수 계산
     category_counts = df['대분류'].value_counts()
@@ -95,6 +98,7 @@ def category_counts_likes():
 category_counts_likes()
 
 # 카테고리 대비 좋아요 수 비율
+st.subheader("카테고리 대비 좋아요 수 비율")
 def category_counts_likes_divide():
     # 각 카테고리별 데이터 개수 계산
     category_counts = df['대분류'].value_counts()
@@ -122,6 +126,7 @@ def category_counts_likes_divide():
 category_counts_likes_divide()
 
 # 전체 키워드 빈도수 (상위 20개)
+st.subheader("전체 키워드 빈도수 (상위 20개)")
 def keyword_frequency():
     # 빈 Counter 객체 생성
     keyword_counter = Counter()
@@ -150,6 +155,7 @@ def keyword_frequency():
 keyword_frequency()
 
 # 업종별 많이 나오는 키워드수
+st.subheader("업종별 많이 나오는 키워드수")
 def category_keyword():
     # 빈 Counter 객체를 각 대분류별로 저장할 딕셔너리 생성
     keyword_counters_by_industry = {}
@@ -188,6 +194,7 @@ def category_keyword():
 category_keyword()
 
 # 월별 많이 나오는 키워드수
+st.subheader("월별 많이 나오는 키워드수")
 def month_keyword():
     # 빈 Counter 객체를 각 월별로 저장할 딕셔너리 생성
     keyword_counters_by_month = {}
@@ -227,6 +234,7 @@ def month_keyword():
 month_keyword()
 
 # 업종별 게시글수
+st.subheader("업종별 게시글수")
 def category_posts():
     # 대분류를 기준으로 그룹화하고, 각 그룹에서 'post' 열 값의 빈도를 계산합니다.
     grouped_counts = df.groupby('대분류').agg(post_count = ('post', 'count'))
@@ -281,6 +289,7 @@ def month_good():
     return st.plotly_chart(fig)
 
 # 탭 설정
+st.subheader("월별 게시글수/좋아요수")
 tab1, tab2 = st.tabs(["월별 게시글 수", "월별 좋아요 수"])
 with tab1:
     month_posts()
@@ -379,6 +388,7 @@ def month_category_posts_good():
     return st.plotly_chart(fig)
 
 # 탭 설정
+st.subheader("월별 대분류별 게시글수/좋아요수/비율")
 tab1, tab2, tab3 = st.tabs(["월별 대분류별 게시글 수", "월별 대분류별 좋아요 수", "월별 대분류별 게시글당 평균 좋아요 비율"])
 with tab1:
     month_category_posts()
@@ -388,6 +398,7 @@ with tab3:
     month_category_posts_good()
 
 # 연도별 많이 나오는 키워드 수
+st.subheader("연도별 많이 나오는 키워드 수")
 def year_keyword():
     # 연도별로 데이터를 그룹화
     years = sorted(df['year'].unique())
@@ -425,6 +436,7 @@ def year_keyword():
 year_keyword()
 
 # 연도별 좋아요 수
+st.subheader("연도별 좋아요 수")
 def year_good_fig1():
     # 연도별로 '좋아요' 수 집계
     grouped_good = df.groupby('year').agg(good_sum=('good', 'sum')).reset_index()
@@ -466,24 +478,24 @@ def year_good_fig2():
     # streamlit 막대그래프 그리기
     st.plotly_chart(fig2)
 
-col1, col2= st.tabs(["막대그래프", "꺾은선그래프"])
-with col1:
+tab1, tab2 = st.tabs(["막대그래프", "꺾은선그래프"])
+with tab1:
     year_good_fig1()
-with col2:
+with tab2:
     year_good_fig2()
 
 # 연도별 대분류별 좋아요 합계
-def year_category_good():
+def year_category_good_fig1():
     # 연도와 대분류별 'good' 열의 합을 계산한 데이터프레임 생성
     grouped_good = df.groupby(['year', '대분류']).agg(good_sum=('good', 'sum')).reset_index()
 
     # Plotly 그래프 객체 생성
-    fig = go.Figure()
+    fig1 = go.Figure()
 
     # 각 대분류별로 그래프를 그립니다.
     for category in grouped_good['대분류'].unique():
         data = grouped_good[grouped_good['대분류'] == category]
-        fig.add_trace(go.Scatter(
+        fig1.add_trace(go.Scatter(
             x=data['year'],
             y=data['good_sum'],
             mode='lines+markers',
@@ -491,8 +503,8 @@ def year_category_good():
         ))
 
     # 그래프 레이아웃 설정
-    fig.update_layout(
-        title='연도별 대분류별 좋아요 합계',
+    fig1.update_layout(
+        title='꺾은선 그래프',
         xaxis=dict(title='연도'),
         yaxis=dict(title='좋아요 합계'),
         legend_title="대분류",
@@ -500,11 +512,95 @@ def year_category_good():
     )
 
     # x축 설정: 모든 연도 표시
-    fig.update_xaxes(tickmode='array', tickvals=grouped_good['year'].unique())
+    fig1.update_xaxes(tickmode='array', tickvals=grouped_good['year'].unique())
 
     # Streamlit에 그래프 표시
-    st.plotly_chart(fig)
-year_category_good()
+    st.plotly_chart(fig1)
+def year_category_good_fig2():
+    # 연도와 대분류별 'good' 열의 합을 계산한 데이터프레임 생성
+    grouped_good = df.groupby(['year', '대분류']).agg(good_sum=('good', 'sum')).reset_index()
+
+    # Plotly 그래프 객체 생성
+    fig2 = go.Figure()
+
+    # 각 대분류별로 막대 그래프를 그립니다.
+    for category in grouped_good['대분류'].unique():
+        data = grouped_good[grouped_good['대분류'] == category]
+        fig2.add_trace(go.Bar(
+            x=data['year'],
+            y=data['good_sum'],
+            name=category,  # 범례 이름 설정
+            marker=dict(opacity=0.7)  # 막대의 투명도 설정
+        ))
+
+    # 그래프 레이아웃 설정
+    fig2.update_layout(
+        title='막대그래프',
+        xaxis=dict(title='연도', type='category'),
+        yaxis=dict(title='좋아요 합계'),
+        legend_title="대분류",
+        barmode='stack',  # 스택드 막대 그래프 설정
+        plot_bgcolor='white'
+    )
+
+    # x축 설정: 연도 별로 정렬
+    fig2.update_xaxes(categoryorder='array', categoryarray=sorted(grouped_good['year'].unique()))
+
+    # Streamlit에 그래프 표시
+    return st.plotly_chart(fig2)
+
+st.subheader("연도별 대분류별 좋아요 합계")
+tab1, tab2 = st.tabs(["막대그래프", "꺾은선그래프"])
+with tab1:
+    year_category_good_fig2()
+with tab2:
+    year_category_good_fig1()
+
+# 연도별 대분류별 게시물수
+def year_category_post_fig1():
+    grouped_post_count = df.groupby(['year', '대분류']).agg(post_count=('post', 'count')).reset_index()
+    fig1 = go.Figure()
+    for category in grouped_post_count['대분류'].unique():
+        data = grouped_post_count[grouped_post_count['대분류'] == category]
+        fig1.add_trace(go.Bar(
+            x=data['year'],
+            y=data['post_count'],
+            name=category,
+            opacity=0.7
+        ))
+    fig1.update_layout(
+        xaxis_title='연도',
+        yaxis_title='게시물 수',
+        barmode='group',
+        legend_title="대분류"
+    )
+    return st.plotly_chart(fig1)
+def year_category_post_fig2():
+    grouped_post_count = df.groupby(['year', '대분류']).agg(post_count=('post', 'count')).reset_index()
+    fig2 = go.Figure()
+    for category in grouped_post_count['대분류'].unique():
+        data = grouped_post_count[grouped_post_count['대분류'] == category]
+        fig2.add_trace(go.Scatter(
+            x=data['year'],
+            y=data['post_count'],
+            mode='lines+markers',
+            name=category
+        ))
+    fig2.update_layout(
+        xaxis_title='연도',
+        yaxis_title='게시물 수',
+        legend_title="대분류"
+    )
+    return st.plotly_chart(fig2)
+
+st.subheader("연도별 대분류별 게시물수")
+tab1, tab2 = st.tabs(["막대그래프", "꺾은선그래프"])
+with tab1:
+    year_category_good_fig2()
+with tab2:
+    year_category_good_fig1()
+
+# 게시글 길이와 좋아요 수의 관계
 
 
 ####################
