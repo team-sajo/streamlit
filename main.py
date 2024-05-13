@@ -94,7 +94,6 @@ def category_posts_day():
 
     # x축 눈금 설정: 연도-월 형식으로 표시
     fig.update_xaxes(
-        tickangle=45,
         tickmode='array',
         tickvals=[str(x) for x in df_pivot_year.index],
         ticktext=[pd.to_datetime(x).strftime('%Y-%m') for x in df_pivot_year.index]
@@ -110,8 +109,8 @@ def category_posts_day():
 
 # 년도별 대분류별 게시글수- 월단위
 def category_posts_month():
-    # Group data by year-month and category
-    df['year_month'] = df['date'].dt.to_period('M')
+    # 날짜 데이터 처리
+    df['year_month'] = pd.to_datetime(df['date']).dt.to_period('M')
     df['year_month'] = df['year_month'].astype(str)
     df_year_month = df.groupby(['year_month', '대분류']).size().reset_index(name='게시글')
     df_year_month['year_month'] = df_year_month['year_month'].astype(str)
@@ -119,29 +118,31 @@ def category_posts_month():
     # 피벗테이블 생성
     df_pivot = df_year_month.pivot(index='year_month', columns='대분류', values='게시글')
 
-    # Plot data year by year with Plotly
+    # 연도별로 데이터 준비
     years = df_year_month['year_month'].str.split('-').str[0].unique()
 
-    # Streamlit 탭 컨테이너 생성
     with st.container():
         tabs = st.tabs([year for year in years])
 
-        # 각 연도별 탭에 해당하는 그래프 추가
         for tab, year in zip(tabs, years):
             df_year = df_pivot[df_pivot.index.str.startswith(year)]
+            
+            # 한글 월 이름으로 라벨 설정
+            month_labels = pd.date_range(start=f'{year}-01', end=f'{year}-12', freq='ME').strftime('%Y-%m')
+            month_korean = pd.date_range(start=f'{year}-01', end=f'{year}-12', freq='ME').strftime('%m월')
+            
+            # 그래프 생성
             fig = px.line(df_year, x=df_year.index, y=df_year.columns,
                           labels={'value': '게시글 수', 'variable': '대분류'},
                           title=f'{year}년도 대분류별 게시글 수')
-            fig.update_xaxes(title_text='월')
+            fig.update_xaxes(title_text='월', tickvals=month_labels, ticktext=month_korean)
             fig.update_yaxes(title_text='게시글 수')
-            fig.update_layout(xaxis_tickangle=-45)
             fig.update_layout(
-            margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
-            paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
-            plot_bgcolor="white",    # 플롯 영역 배경색 설정
-            title_font=dict(color='black'))
-            
-            # 현재 탭에 그래프 출력
+                margin=dict(l=60, r=40, t=60, b=40),
+                paper_bgcolor="#ECF8E0",
+                plot_bgcolor="white",
+                title_font=dict(color='black'))
+
             with tab:
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -177,7 +178,7 @@ def month_category_good():
     return st.plotly_chart(fig, use_container_width=True)
 
 # 연-월별 많이 나오는 키워드
-def month_keyword():
+def year_month_keyword():
     # 년-월별로 키워드 카운터 객체를 저장할 딕셔너리 생성
     keyword_counters_by_year_month = {}
 
@@ -301,7 +302,7 @@ def ID_month_good():
 
     # 그래프 세부사항 설정
     fig.update_traces(marker=dict(size=3))  # 마커 크기 조절
-    fig.update_layout(xaxis_title='월', yaxis_title='좋아요 수', legend_title_text='ID')
+    fig.update_layout(xaxis_title='연도', yaxis_title='좋아요 수', legend_title_text='ID')
     fig.update_layout(
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
     paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
@@ -331,7 +332,7 @@ def ID_posts():
 
     # 그래프 세부사항 설정
     fig.update_traces(marker=dict(size=5))  # 마커 크기 조절
-    fig.update_layout(xaxis_title='월', yaxis_title='게시글 수', legend_title_text='ID')
+    fig.update_layout(xaxis_title='연도', yaxis_title='게시글 수', legend_title_text='ID')
     fig.update_layout(
     margin=dict(l=60, r=40, t=60, b=40),  # 그래프의 마진 조정
     paper_bgcolor="#ECF8E0",   # 그래프 배경색 설정
