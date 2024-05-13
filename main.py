@@ -746,11 +746,6 @@ follower_post()
 ####################
 
 st.sidebar.header("항목을 선택하세요:")
-ID = st.sidebar.multiselect(
-    "Select ID",
-    options = df["ID"].unique(),
-    default = df["ID"].unique()
-)
 
 year = st.sidebar.multiselect(
     "Select Year",
@@ -771,5 +766,5 @@ month = st.sidebar.multiselect(
 )
 
 df_selection = df.query(
-    "ID == @ID & year == @year & month == @month & 대분류 == @대분류"
+    "year == @year & month == @month & 대분류 == @대분류"
 )
