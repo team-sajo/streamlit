@@ -1,4 +1,4 @@
-# streamlit deploy 용으로 만든 리포지토리
+# '역시여행은제주조'의 깃헙 리포지토리
 > Upstage AI Lab 3기 4조의 EDA 프로젝트
 > 
 [![NPM Version][npm-image]][npm-url]
