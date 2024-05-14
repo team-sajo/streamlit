@@ -60,7 +60,7 @@ def gr50():
     st.subheader("연-월별 대분류별 게시글수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
     with col2: 
         month_category_posts()
 
@@ -69,7 +69,7 @@ def gr51():
     st.subheader("연도별 대분류별 게시글수- 일단위")
     col1, col2 = st.columns([1,4])
     with col1:
-        st.subheader("d d d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- ")
         st.markdown("- ")
         st.markdown("- ")
@@ -81,7 +81,7 @@ def gr52():
     st.subheader("연도별 대분류별 게시글수- 월단위")
     col1, col2 = st.columns([1,4])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- ")
         st.markdown("- ")
         st.markdown("- ")
@@ -93,7 +93,7 @@ def gr53():
     st.subheader("연-월별 대분류별 좋아요 수")
     col1, col2 = st.columns([1,4])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
     with col2: 
         month_category_good()
 
@@ -102,7 +102,7 @@ def gr54():
     st.subheader("연-월별 많이 나오는 키워드")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- ")
         st.markdown("- ")
         st.markdown("- ")
@@ -115,7 +115,7 @@ def gr49():
     st.subheader("많이 등장하는 키워드와 좋아요의 관계")
     col1, col2 = st.columns([1,4])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 제주도가 많이 찍혔는데 그 이유가 사람들이 좋아요를 많이 눌러서다?")
         st.markdown("- ")
         st.markdown("- ")
@@ -127,7 +127,7 @@ def gr55():
     st.subheader("계정 ID별 월별 좋아요 수")
     col1, col2 = st.columns([1,4])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- ")
         st.markdown("- ")
         st.markdown("- ")
@@ -139,7 +139,7 @@ def gr56():
     st.subheader("월별 ID별 게시글 수 ")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 활동한만큼 좋아요수가 많아진다.")
         st.markdown("- 게시글을 꾸준히 올려야 좋아요 수가 많아진다.")
         st.markdown("- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적이다.")
@@ -151,7 +151,7 @@ def gr1():
     st.subheader("업종별 게시물수 & 좋아요수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 식당과 관련된 게시물 수가 압도적으로 많음")
         st.markdown("- 관광지와 숙소가 올리는 게시물 수 대비 좋아요가 잘 찍힘")
         st.markdown("- 이에 비해 식당은 게시물 수는 많지만 좋아요가 덜 찍힘")
@@ -171,7 +171,7 @@ def gr2():
     st.subheader("전체 키워드 빈도수 (상위 20개)")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- '제주'라는 키워드가 압도적으로 많음")
         st.markdown("- 맛집 키워드가 2등 -> 인스타에 음식 정보가 많다고 판단됨")
         st.markdown("- 키워드 '서귀포','애월','제주시' 존재 -> 제주도의 주요 지역명을 파악 가능")
@@ -183,7 +183,7 @@ def gr3():
     st.subheader("업종별 많이 나오는 키워드수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 공통적으로 키워드 '제주'가 많이 나왔음")
         st.markdown("- 반려동물 업종에 앵무새가 많이 나왔음")
         st.markdown("- 식당 업종에 흑돼지가 눈에 띔")
@@ -204,7 +204,7 @@ def gr4():
     st.subheader("월별 많이 나오는 키워드수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 제주, 맛집, 카페는 전체적으로 있음 -> 해당 키워드는 계절의 영향을 덜 받음을 추론 가능")
         st.markdown("- 6월에 특징적으로 키워드 수가 적어짐 -> 월별 게시글 수가 줄어든 것과 연관이 있을 수도?")
         st.markdown("- 9월 10월에 '서귀포' 키워드가 없음 -> ?")
@@ -217,7 +217,7 @@ def gr5():
     st.subheader("월별 게시글수 & 좋아요수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 6월이 게시글 수가 특히 적고 11 ~ 1월이 게시글 수가 많음 -> 겨울이 성수기?")
         st.markdown("- 4월과 10월이 게시글수 대비 좋아요수가 많음 -> ?")
     with col2: 
@@ -232,7 +232,7 @@ def gr6():
     st.subheader("월별 대분류별 게시글수 & 좋아요수 & 평균")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 식당 관련 게시물은 겨울에 많아짐")
         st.markdown("- 게시글수와 좋아요수는 대체로 정비례함(4월, 7월 제외)")
     with col2: 
@@ -249,7 +249,7 @@ def gr7():
     st.subheader("연도별 많이 나오는 키워드 수")
     col1, col2 = st.columns([3,4])
     with col1:
-        st.subheader("d d d d d d d d")
+        st.subheader("👀 INSIGHT")
         st.markdown("- 20년도에 포토존, 감성, 분위기 등의 키워드가 특징적으로 나타남")
         st.markdown("- 20년도에 '인생샷'이라는 키워드가 높았는데 21년도부터는 없음 (코로나 떄문? 마스크, 비대면, 여행감소)")
         st.markdown("   - 비대면이라 사진의 중요성이 높아졌다?")
@@ -276,15 +276,14 @@ def gr7():
 
 # 연도별 대분류별 좋아요 합계
 def gr8():
-    st.subheader("연도별 대분류별 좋아요 합계 & 게시물 수")
+    st.subheader("연도별 대분류별 좋아요 합계 & 게시글 수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.subheader("👀 INSIGHT")
+        st.markdown("- 해가 갈수록 좋아요가 늘어나고 있음. 게시글수가 증가해서 그런 것으로 추정됨")
+        st.markdown("- 2022년도에 좋아요수, 게시글수가 급작스럽게 증가함")
     with col2: 
-        tab1, tab2, tab3, tab4 = st.tabs(["✅좋아요-막대", "✅좋아요-꺾은선", "✅게시물수-막대", "✅게시물수-꺾은선"])
+        tab1, tab2, tab3, tab4 = st.tabs(["✅좋아요-막대", "✅좋아요-꺾은선", "✅게시글수-막대", "✅게시글수-꺾은선"])
         with tab1:
             # 연도별 대분류별 좋아요 합계- 막대
             year_category_good_fig2()
@@ -329,10 +328,10 @@ def gr9():
     st.subheader("좋아요수에 영향을 미치는 요인: 팔로워수, 게시글길이, 이모티콘수")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.subheader("👀 INSIGHT")
+        st.markdown("- 팔로워수가 많을수록 좋아요 수가 많은 경향이 있음")
+        st.markdown("- 게시글 길이가 길다고 해서 좋아요수가 많은 건 아님")
+        st.markdown("- 게시글 안에 이모티콘의 수와 좋아요 수는 거의 관련이 없음")
     with col2: 
         tab1, tab2, tab3 = st.tabs(["✅팔로워수", "✅게시글 길이", "✅이모티콘수"])
         with tab1:
@@ -351,10 +350,9 @@ def gr10():
     st.subheader("팔로워수에 영향을 미치는 요인: 게시글수, ID 길이")
     col1, col2 = st.columns([1,3])
     with col1:
-        st.subheader("d d d d d d")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.subheader("👀 INSIGHT")
+        st.markdown("- 게시글수와 팔로워수는 어느정도 정비례함")
+        st.markdown("- 계정의 ID길이와 팔로워수는.. 관련이 없음!")
     with col2: 
         tab1, tab2= st.tabs(["✅게시글 수","✅ID 길이"])
         with tab1:
