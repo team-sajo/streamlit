@@ -56,46 +56,49 @@ with st.expander("📑⛏️ 우리가 찾은 데이터 📑⛏️"):
 # -----------------------------
 
 # 연-월별 대분류별 게시글수
-def gr50():
-    st.subheader("연-월별 대분류별 게시글수")
-    col1, col2 = st.columns([1,3])
-    with col1:
-        st.subheader("👀 INSIGHT")
-    with col2: 
-        month_category_posts()
+# def gr50():
+#     st.subheader("연-월별 대분류별 게시글수")
+#     col1, col2 = st.columns([1,3])
+#     with col1:
+#         st.subheader("👀 INSIGHT")
+#         st.markdown("- ")
+#     with col2: 
+#         month_category_posts()
 
 # 연도별 대분류별 게시글수- 일단위
 def gr51():
     st.subheader("연도별 대분류별 게시글수- 일단위")
-    col1, col2 = st.columns([1,4])
+    col1, col2 = st.columns([1,3])
     with col1:
         st.subheader("👀 INSIGHT")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.markdown("- 관광지 게시글수가 꾸준히 증가함")
+        st.markdown("- 20~24년도의 전체적인 추세를 알 수 있음")
     with col2: 
         category_posts_day()
 
 # 연도별 대분류별 게시글수- 월단위
 def gr52():
     st.subheader("연도별 대분류별 게시글수- 월단위")
-    col1, col2 = st.columns([1,4])
+    col1, col2 = st.columns([1,3])
     with col1:
         st.subheader("👀 INSIGHT")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.markdown("- 식당 게시글수가 상위권에 위치함")
+        st.markdown("- 관광지 게시글수가 점점 많아져서 24년도에는 가장 많음")
+        st.markdown("- 전체적인 글의 개수가 많아짐")
     with col2: 
         category_posts_month()
 
 # 연-월별 대분류별 좋아요 수
-def gr53():
-    st.subheader("연-월별 대분류별 좋아요 수")
-    col1, col2 = st.columns([1,4])
-    with col1:
-        st.subheader("👀 INSIGHT")
-    with col2: 
-        month_category_good()
+# def gr53():
+#     st.subheader("연-월별 대분류별 좋아요 수")
+#     col1, col2 = st.columns([1,4])
+#     with col1:
+#         st.subheader("👀 INSIGHT")
+#         st.markdown("-")
+#         st.markdown("-")
+#         st.markdown("-")
+#     with col2: 
+#         month_category_good()
 
 # 연-월별 많이 나오는 키워드
 def gr54():
@@ -103,9 +106,9 @@ def gr54():
     col1, col2 = st.columns([1,3])
     with col1:
         st.subheader("👀 INSIGHT")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.markdown("- 20년도 상반기에 '인생샷' 키워드가 압도적으로 많음 -> 20년도 상반기는 코로나 유행하기 시작한 시기 -> 코로나의 영향?")
+        st.markdown("- 전체적으로 '오션뷰' 키워드가 계속 등장함 -> 오션뷰가 메리트 있는 항목임을 알 수 있음")
+        st.markdown("- '제주여행' 키워드로 보아 제주는 여행지임을 유추할 수 있음")
     with col2: 
         year_month_keyword()
 
@@ -113,24 +116,24 @@ def gr54():
 # 많이 등장하는 키워드와 좋아요의 관계
 def gr49():
     st.subheader("많이 등장하는 키워드와 좋아요의 관계")
-    col1, col2 = st.columns([1,4])
+    col1, col2 = st.columns([1,3])
     with col1:
         st.subheader("👀 INSIGHT")
-        st.markdown("- 제주도가 많이 찍혔는데 그 이유가 사람들이 좋아요를 많이 눌러서다?")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.markdown("- '디저트' 키워드가 포함된 게시물에 좋아요가 가장 많이 찍힘")
+        st.markdown("- '제주도' 키워드가 포함된 게시물에 좋아요가 많이 찍힘 -> 사람들이 좋아요를 많이 눌러서?")
+        st.markdown("- 키워드 양 자체는 '제주'가 많은데 이에 비해 좋아요 수는 적음")
     with col2: 
         keyword_good()
 
 # 계정 ID별 월별 좋아요 수
 def gr55():
     st.subheader("계정 ID별 월별 좋아요 수")
-    col1, col2 = st.columns([1,4])
+    col1, col2 = st.columns([1,3])
     with col1:
         st.subheader("👀 INSIGHT")
-        st.markdown("- ")
-        st.markdown("- ")
-        st.markdown("- ")
+        st.markdown("- @jejuplantes의 좋아요수가 22년 하반기에 급격하게 떨어짐")
+        st.markdown("- @jeju_source의 좋아요수가 가장 꾸준함 ")
+        st.markdown("- 한번 좋아요 수가 떨어지면 회복하기 쉽지 않음?")
     with col2: 
         ID_month_good()
 
@@ -140,9 +143,9 @@ def gr56():
     col1, col2 = st.columns([1,3])
     with col1:
         st.subheader("👀 INSIGHT")
-        st.markdown("- 활동한만큼 좋아요수가 많아진다.")
-        st.markdown("- 게시글을 꾸준히 올려야 좋아요 수가 많아진다.")
-        st.markdown("- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적이다.")
+        st.markdown("- 활동한만큼 좋아요수가 많아짐")
+        st.markdown("- 게시글을 꾸준히 올려야 좋아요 수가 많아짐")
+        st.markdown("- 평균적으로 60개 정도의 게시물을 올리니까 하루에 2개이상, 한달에 50개 이상의 게시물을 올리는 것이 효과적임")
     with col2: 
         ID_posts()
 # -----------------------------
@@ -376,24 +379,24 @@ st.sidebar.image(image, width=308)
 st.sidebar.header("그래프를 선택하세요:")
 
 status2 = st.sidebar.radio('시계열분석', ['선택x',
-                                        '연-월별 대분류별 게시글수',
+                                        # '연-월별 대분류별 게시글수', #시계열분석
                                         '연도별 대분류별 게시글수- 일단위', #시계열분석
                                         '연도별 대분류별 게시글수- 월단위', #시계열분석
-                                        '연-월별 대분류별 좋아요 수', #시계열분석
+                                        # '연-월별 대분류별 좋아요 수', #시계열분석
                                         '✅연-월별 많이 나오는 키워드', # 시계열분석
                                         '많이 등장하는 키워드와 좋아요의 관계', #시계열분석
                                         '✅계정 ID별 월별 좋아요수', # 시계열분석
                                         '✅월별 ID별 게시글수', # 시계열분석
                                     ])
 
-if status2 == '연-월별 대분류별 게시글수' : #시계열분석
-    gr50()
-elif status2 == '연도별 대분류별 게시글수- 일단위': #시계열분석
+# if status2 == '연-월별 대분류별 게시글수' : #시계열분석
+#     gr50()
+if status2 == '연도별 대분류별 게시글수- 일단위': #시계열분석
     gr51()
 elif status2 == '연도별 대분류별 게시글수- 월단위' : # 시계열분석
     gr52()
-elif status2 == '연-월별 대분류별 좋아요 수' : # 시계열분석
-    gr53()
+# elif status2 == '연-월별 대분류별 좋아요 수' : # 시계열분석
+#     gr53()
 elif status2 == '✅연-월별 많이 나오는 키워드' : # 시계열분석
     gr54()
 elif status2 == '많이 등장하는 키워드와 좋아요의 관계': #시계열분석

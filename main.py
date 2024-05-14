@@ -90,7 +90,7 @@ def category_posts_day():
     # Plotly를 사용하여 선 그래프 생성
     fig = px.line(df_pivot_year, x=df_pivot_year.index, y=df_pivot_year.columns,
                 labels={'value': '게시글 수', 'year_month_day': '날짜', 'variable': '대분류'},
-                title=f'{selected_year}년도 대분류별 게시글 수')
+                title='2020~2024년도 대분류별 일별 게시글 수')
 
     # x축 눈금 설정: 연도-월 형식으로 표시
     fig.update_xaxes(
